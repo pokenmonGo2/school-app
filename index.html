@@ -16,15 +16,12 @@ body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
     color: #171717;
-    min-height: 100vh;
 }
 
 .app {
     display: flex;
     min-height: 100vh;
 }
-
-/* SIDEBAR */
 
 .sidebar {
     width: 250px;
@@ -33,8 +30,6 @@ body {
     padding: 25px 15px;
     position: fixed;
     height: 100vh;
-    left: 0;
-    top: 0;
 }
 
 .logo {
@@ -51,21 +46,19 @@ body {
 }
 
 .nav button {
-    border: none;
+    border: 0;
     background: transparent;
     padding: 13px;
     border-radius: 10px;
     text-align: left;
-    font-size: 15px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .nav button:hover,
 .nav button.active {
     background: #eeeeee;
 }
-
-/* MAIN */
 
 .main {
     margin-left: 250px;
@@ -88,10 +81,8 @@ body {
 
 .subtitle {
     color: #777;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
-
-/* CARDS */
 
 .cards {
     display: grid;
@@ -99,7 +90,8 @@ body {
     gap: 18px;
 }
 
-.card {
+.card,
+.section {
     background: white;
     border: 1px solid #e5e5e5;
     border-radius: 17px;
@@ -117,38 +109,7 @@ body {
     font-weight: bold;
 }
 
-/* BUTTON */
-
-.btn {
-    background: #171717;
-    color: white;
-    border: none;
-    padding: 11px 17px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.btn:hover {
-    opacity: .85;
-}
-
-.btn-delete {
-    background: #eee;
-    color: #222;
-    border: none;
-    padding: 7px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* SECTION */
-
 .section {
-    background: white;
-    border: 1px solid #e5e5e5;
-    border-radius: 17px;
-    padding: 22px;
     margin-top: 25px;
 }
 
@@ -159,25 +120,42 @@ body {
     margin-bottom: 18px;
 }
 
-.section-header h3 {
-    font-size: 19px;
+.btn {
+    background: #171717;
+    color: white;
+    border: 0;
+    padding: 11px 17px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-/* ROOSTER */
-
-.day {
-    margin-bottom: 25px;
+.btn:hover {
+    opacity: .85;
 }
 
-.day h3 {
-    margin-bottom: 12px;
+.btn-light {
+    background: #eee;
+    color: #222;
 }
 
-.lesson {
+.btn-danger {
+    background: #d93636;
+    color: white;
+}
+
+.btn-small {
+    padding: 7px 10px;
+    font-size: 12px;
+}
+
+.lesson,
+.task,
+.attendance-row,
+.class-row {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 17px;
+    gap: 15px;
+    padding: 14px;
     background: #f7f7f7;
     border-radius: 12px;
     margin-bottom: 8px;
@@ -194,18 +172,12 @@ body {
 
 .lesson-info strong {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .lesson-info span {
     color: #777;
     font-size: 13px;
-}
-
-/* TABLE */
-
-.table-container {
-    overflow-x: auto;
 }
 
 table {
@@ -215,7 +187,7 @@ table {
 
 th,
 td {
-    padding: 14px;
+    padding: 13px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
@@ -225,58 +197,57 @@ th {
     font-size: 13px;
 }
 
-/* GRADE */
-
-.grade {
+.grade-good {
+    color: #17833b;
     font-weight: bold;
 }
 
-.good {
-    color: #17833b;
-}
-
-.normal {
+.grade-normal {
     color: #bd7b00;
+    font-weight: bold;
 }
 
-.low {
+.grade-low {
     color: #c73838;
+    font-weight: bold;
 }
 
-/* TASKS */
-
-.task {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 14px 0;
-    border-bottom: 1px solid #eee;
+.status {
+    display: inline-block;
+    padding: 6px 9px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-.task:last-child {
-    border-bottom: none;
+.status-present {
+    background: #e1f4e7;
+    color: #197238;
 }
 
-.task input {
-    width: 18px;
-    height: 18px;
+.status-late {
+    background: #fff1cf;
+    color: #956600;
 }
 
-.task.done span {
-    text-decoration: line-through;
-    color: #999;
+.status-absent {
+    background: #ffe1e1;
+    color: #a52828;
 }
 
-/* MODAL */
+.status-excused {
+    background: #e7e7ff;
+    color: #4d4da0;
+}
 
 .modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.4);
+    background: rgba(0,0,0,.45);
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .modal.show {
@@ -284,9 +255,11 @@ th {
 }
 
 .modal-box {
-    width: 90%;
-    max-width: 450px;
     background: white;
+    width: 92%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     border-radius: 18px;
     padding: 25px;
 }
@@ -302,17 +275,23 @@ th {
 .form-group label {
     display: block;
     font-size: 13px;
-    margin-bottom: 6px;
     color: #666;
+    margin-bottom: 6px;
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 11px;
     border: 1px solid #ddd;
     border-radius: 9px;
-    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    min-height: 90px;
+    resize: vertical;
 }
 
 .modal-buttons {
@@ -322,28 +301,92 @@ th {
     margin-top: 20px;
 }
 
-.cancel {
-    border: none;
-    background: #eee;
-    padding: 11px 17px;
-    border-radius: 10px;
+.admin-lock {
+    max-width: 420px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.admin-lock .lock-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.admin-menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.admin-card {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 15px;
+    padding: 20px;
     cursor: pointer;
 }
 
-/* MOBILE */
+.admin-card:hover {
+    background: #f7f7f7;
+}
 
-@media(max-width: 800px) {
+.admin-card strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.admin-card span {
+    color: #777;
+    font-size: 13px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.class-selector {
+    margin-bottom: 20px;
+}
+
+.class-selector select {
+    padding: 11px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    min-width: 250px;
+}
+
+.empty {
+    color: #999;
+    padding: 15px 0;
+}
+
+@media(max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 700px) {
+    .app {
+        display: block;
+    }
 
     .sidebar {
+        position: relative;
         width: 100%;
         height: auto;
-        position: relative;
-        border-right: none;
+        border-right: 0;
         border-bottom: 1px solid #ddd;
     }
 
-    .app {
-        display: block;
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .main {
@@ -352,24 +395,12 @@ th {
         padding: 20px;
     }
 
-    .nav {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(max-width: 500px) {
-
     .cards {
         grid-template-columns: 1fr;
     }
 
-    .page-title {
-        font-size: 27px;
+    .admin-menu {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -379,13 +410,9 @@ th {
 
 <div class="app">
 
-<!-- SIDEBAR -->
-
 <aside class="sidebar">
 
-    <div class="logo">
-        🎓 Mijn School
-    </div>
+    <div class="logo">🎓 Mijn School</div>
 
     <div class="nav">
 
@@ -406,23 +433,29 @@ th {
         </button>
 
         <button onclick="showPage('taken', this)">
-            ✅ Taken
+            ✅ Huiswerk
         </button>
 
         <button onclick="showPage('agenda', this)">
             🗓️ Agenda
         </button>
 
+        <button onclick="showPage('aanwezigheid', this)">
+            🧑‍🏫 Aanwezigheid
+        </button>
+
         <button onclick="showPage('lokalen', this)">
             🏫 Lokalen
+        </button>
+
+        <button onclick="showPage('admin', this)">
+            🔐 Admin
         </button>
 
     </div>
 
 </aside>
 
-
-<!-- MAIN -->
 
 <main class="main">
 
@@ -431,80 +464,38 @@ th {
 
 <section id="home" class="page active">
 
-    <h1 class="page-title">
-        Goedemorgen 👋
-    </h1>
-
+    <h1 class="page-title">Goedemorgen 👋</h1>
     <p class="subtitle" id="date"></p>
 
     <div class="cards">
 
         <div class="card">
-            <div class="card-title">
-                📚 Vakken
-            </div>
-
-            <div class="card-number" id="homeVakken">
-                0
-            </div>
+            <div class="card-title">📚 Vakken</div>
+            <div class="card-number" id="homeVakken">0</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                📊 Gemiddelde
-            </div>
-
-            <div class="card-number" id="homeAverage">
-                -
-            </div>
+            <div class="card-title">📊 Gemiddelde</div>
+            <div class="card-number" id="homeAverage">-</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                ✅ Openstaande taken
-            </div>
-
-            <div class="card-number" id="homeTasks">
-                0
-            </div>
+            <div class="card-title">📝 Openstaand huiswerk</div>
+            <div class="card-number" id="homeTasks">0</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                📅 Lessen vandaag
-            </div>
-
-            <div class="card-number" id="homeLessons">
-                0
-            </div>
+            <div class="card-title">📅 Lessen vandaag</div>
+            <div class="card-number" id="homeLessons">0</div>
         </div>
 
     </div>
 
-
     <div class="section">
-
         <div class="section-header">
             <h3>📅 Vandaag</h3>
         </div>
-
-        <div id="todayLessons">
-            Geen lessen vandaag.
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-header">
-            <h3>✅ Taken</h3>
-        </div>
-
-        <div id="homeTaskList">
-            Geen openstaande taken.
-        </div>
-
+        <div id="todayLessons"></div>
     </div>
 
 </section>
@@ -514,28 +505,11 @@ th {
 
 <section id="rooster" class="page">
 
-    <h1 class="page-title">
-        📅 Rooster
-    </h1>
-
-    <p class="subtitle">
-        Jouw lessen per dag
-    </p>
+    <h1 class="page-title">📅 Rooster</h1>
+    <p class="subtitle">Jouw lessen</p>
 
     <div class="section">
-
-        <div class="section-header">
-
-            <h3>Weekrooster</h3>
-
-            <button class="btn" onclick="openModal('lesson')">
-                + Les toevoegen
-            </button>
-
-        </div>
-
         <div id="schedule"></div>
-
     </div>
 
 </section>
@@ -545,59 +519,31 @@ th {
 
 <section id="cijfers" class="page">
 
-    <h1 class="page-title">
-        📊 Cijfers
-    </h1>
-
-    <p class="subtitle">
-        Bekijk je cijfers en gemiddelden.
-    </p>
+    <h1 class="page-title">📊 Cijfers</h1>
+    <p class="subtitle">Jouw resultaten</p>
 
     <div class="cards">
 
         <div class="card">
-            <div class="card-title">
-                Gemiddelde
-            </div>
-
-            <div class="card-number" id="average">
-                -
-            </div>
+            <div class="card-title">Gemiddelde</div>
+            <div class="card-number" id="average">-</div>
         </div>
 
     </div>
 
-
     <div class="section">
 
-        <div class="section-header">
+        <table>
+            <thead>
+                <tr>
+                    <th>Vak</th>
+                    <th>Cijfer</th>
+                    <th>Weging</th>
+                </tr>
+            </thead>
 
-            <h3>Mijn cijfers</h3>
-
-            <button class="btn" onclick="openModal('grade')">
-                + Cijfer
-            </button>
-
-        </div>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Vak</th>
-                        <th>Cijfer</th>
-                        <th>Weging</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
-                <tbody id="gradesTable"></tbody>
-
-            </table>
-
-        </div>
+            <tbody id="gradesTable"></tbody>
+        </table>
 
     </div>
 
@@ -608,73 +554,36 @@ th {
 
 <section id="vakken" class="page">
 
-    <h1 class="page-title">
-        📚 Vakken
-    </h1>
-
-    <p class="subtitle">
-        Al je schoolvakken.
-    </p>
+    <h1 class="page-title">📚 Vakken</h1>
+    <p class="subtitle">Jouw vakken</p>
 
     <div class="section">
 
-        <div class="section-header">
+        <table>
+            <thead>
+                <tr>
+                    <th>Vak</th>
+                    <th>Docent</th>
+                    <th>Lokaal</th>
+                </tr>
+            </thead>
 
-            <h3>Mijn vakken</h3>
-
-            <button class="btn" onclick="openModal('subject')">
-                + Vak toevoegen
-            </button>
-
-        </div>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Vak</th>
-                        <th>Docent</th>
-                        <th>Lokaal</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
-                <tbody id="subjectsTable"></tbody>
-
-            </table>
-
-        </div>
+            <tbody id="subjectsTable"></tbody>
+        </table>
 
     </div>
 
 </section>
 
 
-<!-- TAKEN -->
+<!-- HUISWERK -->
 
 <section id="taken" class="page">
 
-    <h1 class="page-title">
-        ✅ Taken
-    </h1>
-
-    <p class="subtitle">
-        Huiswerk en opdrachten.
-    </p>
+    <h1 class="page-title">✅ Huiswerk</h1>
+    <p class="subtitle">Opdrachten en huiswerk</p>
 
     <div class="section">
-
-        <div class="section-header">
-
-            <h3>Mijn taken</h3>
-
-            <button class="btn" onclick="openModal('task')">
-                + Taak toevoegen
-            </button>
-
-        </div>
 
         <div id="tasksList"></div>
 
@@ -687,28 +596,46 @@ th {
 
 <section id="agenda" class="page">
 
-    <h1 class="page-title">
-        🗓️ Agenda
-    </h1>
-
-    <p class="subtitle">
-        Toetsen, deadlines en afspraken.
-    </p>
+    <h1 class="page-title">🗓️ Agenda</h1>
+    <p class="subtitle">Toetsen en belangrijke gebeurtenissen</p>
 
     <div class="section">
 
-        <div class="section-header">
-
-            <h3>Agenda</h3>
-
-            <button class="btn" onclick="openModal('event')">
-                + Gebeurtenis
-            </button>
-
-        </div>
-
         <div id="agendaList"></div>
 
+    </div>
+
+</section>
+
+
+<!-- AANWEZIGHEID -->
+
+<section id="aanwezigheid" class="page">
+
+    <h1 class="page-title">🧑‍🏫 Aanwezigheid</h1>
+    <p class="subtitle">Jouw aanwezigheid</p>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-title">Aanwezig</div>
+            <div class="card-number" id="presentCount">0</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Te laat</div>
+            <div class="card-number" id="lateCount">0</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Afwezig</div>
+            <div class="card-number" id="absentCount">0</div>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <div id="attendanceList"></div>
     </div>
 
 </section>
@@ -718,25 +645,215 @@ th {
 
 <section id="lokalen" class="page">
 
-    <h1 class="page-title">
-        🏫 Lokalen
-    </h1>
-
-    <p class="subtitle">
-        Overzicht van je lokalen.
-    </p>
+    <h1 class="page-title">🏫 Lokalen</h1>
+    <p class="subtitle">Lokalen van jouw lessen</p>
 
     <div class="section">
-
         <div id="roomsList"></div>
-
     </div>
 
 </section>
 
 
-</main>
+<!-- ADMIN -->
 
+<section id="admin" class="page">
+
+    <div id="adminLogin">
+
+        <div class="admin-lock">
+
+            <div class="lock-icon">🔐</div>
+
+            <h1 class="page-title">Adminpanel</h1>
+
+            <p class="subtitle">
+                Voer de beheerderscode in.
+            </p>
+
+            <div class="form-group">
+                <input
+                    id="adminCode"
+                    type="password"
+                    inputmode="numeric"
+                    placeholder="Code">
+            </div>
+
+            <button class="btn" onclick="loginAdmin()">
+                Inloggen
+            </button>
+
+            <p id="loginError"
+               style="color:#c73838;margin-top:12px">
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="adminPanel" class="hidden">
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+
+            <div>
+                <h1 class="page-title">⚙️ Adminpanel</h1>
+                <p class="subtitle">
+                    Beheer klassen, rooster, cijfers, huiswerk en aanwezigheid.
+                </p>
+            </div>
+
+            <button class="btn btn-light" onclick="logoutAdmin()">
+                Uitloggen
+            </button>
+
+        </div>
+
+
+        <div class="admin-menu">
+
+            <div class="admin-card" onclick="adminSection('classes')">
+                <strong>🏫 Klassen</strong>
+                <span>Klassen maken en beheren</span>
+            </div>
+
+            <div class="admin-card" onclick="adminSection('schedule')">
+                <strong>📅 Rooster</strong>
+                <span>Lessen toevoegen</span>
+            </div>
+
+            <div class="admin-card" onclick="adminSection('grades')">
+                <strong>📊 Cijfers</strong>
+                <span>Cijfers beheren</span>
+            </div>
+
+            <div class="admin-card" onclick="adminSection('attendance')">
+                <strong>🧑‍🏫 Aanwezigheid</strong>
+                <span>Presentie registreren</span>
+            </div>
+
+            <div class="admin-card" onclick="adminSection('homework')">
+                <strong>📝 Huiswerk</strong>
+                <span>Opdrachten beheren</span>
+            </div>
+
+        </div>
+
+
+        <!-- ADMIN KLASSEN -->
+
+        <div id="adminClasses" class="section admin-part">
+
+            <div class="section-header">
+
+                <h3>🏫 Klassen</h3>
+
+                <button class="btn" onclick="openModal('class')">
+                    + Klas maken
+                </button>
+
+            </div>
+
+            <div id="classesList"></div>
+
+        </div>
+
+
+        <!-- ADMIN ROOSTER -->
+
+        <div id="adminSchedule" class="section admin-part hidden">
+
+            <div class="section-header">
+                <h3>📅 Rooster beheren</h3>
+
+                <button class="btn" onclick="openModal('lesson')">
+                    + Les toevoegen
+                </button>
+            </div>
+
+            <div id="adminScheduleList"></div>
+
+        </div>
+
+
+        <!-- ADMIN CIJFERS -->
+
+        <div id="adminGrades" class="section admin-part hidden">
+
+            <div class="section-header">
+                <h3>📊 Cijfers beheren</h3>
+
+                <button class="btn" onclick="openModal('grade')">
+                    + Cijfer
+                </button>
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Klas</th>
+                            <th>Leerling</th>
+                            <th>Vak</th>
+                            <th>Cijfer</th>
+                            <th>Weging</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="adminGradesTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADMIN AANWEZIGHEID -->
+
+        <div id="adminAttendance" class="section admin-part hidden">
+
+            <div class="section-header">
+
+                <h3>🧑‍🏫 Aanwezigheid beheren</h3>
+
+                <button class="btn" onclick="openModal('attendance')">
+                    + Registreren
+                </button>
+
+            </div>
+
+            <div id="adminAttendanceList"></div>
+
+        </div>
+
+
+        <!-- ADMIN HUISWERK -->
+
+        <div id="adminHomework" class="section admin-part hidden">
+
+            <div class="section-header">
+
+                <h3>📝 Huiswerk beheren</h3>
+
+                <button class="btn" onclick="openModal('homework')">
+                    + Huiswerk
+                </button>
+
+            </div>
+
+            <div id="adminHomeworkList"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
 </div>
 
 
@@ -746,9 +863,7 @@ th {
 
     <div class="modal-box">
 
-        <h2 id="modalTitle">
-            Toevoegen
-        </h2>
+        <h2 id="modalTitle">Toevoegen</h2>
 
         <div id="modalContent"></div>
 
@@ -759,13 +874,32 @@ th {
 
 <script>
 
-/* =========================
+/* =====================================================
+   ADMIN CODE
+===================================================== */
+
+const ADMIN_CODE = "5676";
+
+
+/* =====================================================
    DATA
-========================= */
+===================================================== */
 
 let data = JSON.parse(
     localStorage.getItem("schoolAppData")
 ) || {
+
+    classes: [
+        {
+            id: 1,
+            name: "2A",
+            students: [
+                "Leerling 1",
+                "Leerling 2",
+                "Leerling 3"
+            ]
+        }
+    ],
 
     subjects: [
         {
@@ -777,24 +911,6 @@ let data = JSON.parse(
             name: "Nederlands",
             teacher: "Mevr. De Vries",
             room: "A103"
-        },
-        {
-            name: "Engels",
-            teacher: "Dhr. Peters",
-            room: "C201"
-        }
-    ],
-
-    grades: [
-        {
-            subject: "Wiskunde",
-            grade: 7.5,
-            weight: 2
-        },
-        {
-            subject: "Nederlands",
-            grade: 8,
-            weight: 1
         }
     ],
 
@@ -804,57 +920,52 @@ let data = JSON.parse(
             time: "08:30",
             subject: "Wiskunde",
             teacher: "Dhr. Jansen",
-            room: "B204"
+            room: "B204",
+            className: "2A"
         },
         {
             day: "Maandag",
             time: "09:20",
             subject: "Nederlands",
             teacher: "Mevr. De Vries",
-            room: "A103"
-        },
-        {
-            day: "Maandag",
-            time: "10:30",
-            subject: "Engels",
-            teacher: "Dhr. Peters",
-            room: "C201"
-        },
-        {
-            day: "Dinsdag",
-            time: "08:30",
-            subject: "Biologie",
-            teacher: "Mevr. Smit",
-            room: "B102"
+            room: "A103",
+            className: "2A"
         }
     ],
 
-    tasks: [
+    grades: [
         {
-            title: "Wiskunde hoofdstuk 4",
-            date: "2026-09-08",
-            done: false
-        },
-        {
-            title: "Engels woordjes leren",
-            date: "2026-09-09",
-            done: false
+            className: "2A",
+            student: "Leerling 1",
+            subject: "Wiskunde",
+            grade: 7.5,
+            weight: 2
         }
     ],
 
-    events: [
+    homework: [
         {
-            title: "Toets Wiskunde",
-            date: "2026-09-15"
+            className: "2A",
+            subject: "Wiskunde",
+            title: "Hoofdstuk 4 maken",
+            date: "2026-09-10",
+            notDone: false
         }
-    ]
+    ],
 
+    attendance: [
+        {
+            className: "2A",
+            student: "Leerling 1",
+            date: "2026-09-07",
+            subject: "Wiskunde",
+            status: "Aanwezig"
+        }
+    ],
+
+    events: []
 };
 
-
-/* =========================
-   SAVE
-========================= */
 
 function save() {
 
@@ -866,22 +977,20 @@ function save() {
 }
 
 
-/* =========================
+/* =====================================================
    NAVIGATIE
-========================= */
+===================================================== */
 
 function showPage(page, button) {
 
-    document.querySelectorAll(".page").forEach(
-        p => p.classList.remove("active")
-    );
+    document.querySelectorAll(".page")
+        .forEach(p => p.classList.remove("active"));
 
     document.getElementById(page)
         .classList.add("active");
 
-    document.querySelectorAll(".nav button").forEach(
-        b => b.classList.remove("active")
-    );
+    document.querySelectorAll(".nav button")
+        .forEach(b => b.classList.remove("active"));
 
     button.classList.add("active");
 
@@ -890,16 +999,83 @@ function showPage(page, button) {
 }
 
 
-/* =========================
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+function loginAdmin() {
+
+    const code =
+        document.getElementById("adminCode").value;
+
+    if (code === ADMIN_CODE) {
+
+        document.getElementById("adminLogin")
+            .classList.add("hidden");
+
+        document.getElementById("adminPanel")
+            .classList.remove("hidden");
+
+        document.getElementById("loginError")
+            .textContent = "";
+
+        renderAdmin();
+
+    } else {
+
+        document.getElementById("loginError")
+            .textContent = "Onjuiste code.";
+
+    }
+
+}
+
+
+function logoutAdmin() {
+
+    document.getElementById("adminLogin")
+        .classList.remove("hidden");
+
+    document.getElementById("adminPanel")
+        .classList.add("hidden");
+
+    document.getElementById("adminCode").value = "";
+
+}
+
+
+/* =====================================================
+   ADMIN SECTIONS
+===================================================== */
+
+function adminSection(section) {
+
+    document.querySelectorAll(".admin-part")
+        .forEach(x => x.classList.add("hidden"));
+
+    const target = {
+        classes: "adminClasses",
+        schedule: "adminSchedule",
+        grades: "adminGrades",
+        attendance: "adminAttendance",
+        homework: "adminHomework"
+    }[section];
+
+    document.getElementById(target)
+        .classList.remove("hidden");
+
+}
+
+
+/* =====================================================
    DATUM
-========================= */
+===================================================== */
 
 function updateDate() {
 
-    const today = new Date();
-
-    document.getElementById("date").textContent =
-        today.toLocaleDateString("nl-NL", {
+    document.getElementById("date")
+        .textContent = new Date()
+        .toLocaleDateString("nl-NL", {
             weekday: "long",
             day: "numeric",
             month: "long",
@@ -909,33 +1085,33 @@ function updateDate() {
 }
 
 
-/* =========================
+/* =====================================================
    GEMIDDELDE
-========================= */
+===================================================== */
 
 function calculateAverage() {
 
-    if (data.grades.length === 0)
+    if (!data.grades.length)
         return "-";
 
     let total = 0;
-    let weights = 0;
+    let weight = 0;
 
     data.grades.forEach(g => {
 
         total += Number(g.grade) * Number(g.weight);
-        weights += Number(g.weight);
+        weight += Number(g.weight);
 
     });
 
-    return (total / weights).toFixed(2);
+    return (total / weight).toFixed(2);
 
 }
 
 
-/* =========================
-   CIJFERS
-========================= */
+/* =====================================================
+   CIJFERS LEERLING
+===================================================== */
 
 function renderGrades() {
 
@@ -944,36 +1120,22 @@ function renderGrades() {
 
     table.innerHTML = "";
 
-    data.grades.forEach((g, index) => {
+    data.grades.forEach(g => {
 
-        let gradeClass = "normal";
+        let cls = "grade-normal";
 
         if (g.grade >= 7.5)
-            gradeClass = "good";
+            cls = "grade-good";
 
         if (g.grade < 5.5)
-            gradeClass = "low";
+            cls = "grade-low";
 
         table.innerHTML += `
 
         <tr>
-
             <td>${g.subject}</td>
-
-            <td class="grade ${gradeClass}">
-                ${g.grade}
-            </td>
-
+            <td class="${cls}">${g.grade}</td>
             <td>${g.weight}</td>
-
-            <td>
-                <button
-                    class="btn-delete"
-                    onclick="deleteGrade(${index})">
-                    Verwijder
-                </button>
-            </td>
-
         </tr>
 
         `;
@@ -989,19 +1151,9 @@ function renderGrades() {
 }
 
 
-function deleteGrade(index) {
-
-    data.grades.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =========================
+/* =====================================================
    VAKKEN
-========================= */
+===================================================== */
 
 function renderSubjects() {
 
@@ -1010,28 +1162,14 @@ function renderSubjects() {
 
     table.innerHTML = "";
 
-    data.subjects.forEach((s, index) => {
+    data.subjects.forEach(s => {
 
         table.innerHTML += `
 
         <tr>
-
             <td>${s.name}</td>
-
             <td>${s.teacher}</td>
-
             <td>${s.room}</td>
-
-            <td>
-
-                <button
-                    class="btn-delete"
-                    onclick="deleteSubject(${index})">
-                    Verwijder
-                </button>
-
-            </td>
-
         </tr>
 
         `;
@@ -1044,19 +1182,9 @@ function renderSubjects() {
 }
 
 
-function deleteSubject(index) {
-
-    data.subjects.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =========================
+/* =====================================================
    ROOSTER
-========================= */
+===================================================== */
 
 function renderSchedule() {
 
@@ -1083,51 +1211,37 @@ function renderSchedule() {
             );
 
         let html = `
-            <div class="day">
-                <h3>${day}</h3>
+            <div style="margin-bottom:25px">
+                <h3 style="margin-bottom:12px">${day}</h3>
         `;
 
-        if (lessons.length === 0) {
+        if (!lessons.length) {
 
-            html += `
-                <p style="color:#999">
-                    Geen lessen
-                </p>
-            `;
+            html += `<p class="empty">Geen lessen</p>`;
 
         }
 
-        lessons.forEach((lesson) => {
-
-            const index =
-                data.lessons.indexOf(lesson);
+        lessons.forEach(l => {
 
             html += `
 
             <div class="lesson">
 
                 <div class="lesson-time">
-                    ${lesson.time}
+                    ${l.time}
                 </div>
 
                 <div class="lesson-info">
 
-                    <strong>
-                        ${lesson.subject}
-                    </strong>
+                    <strong>${l.subject}</strong>
 
                     <span>
-                        ${lesson.teacher}
-                        · Lokaal ${lesson.room}
+                        ${l.teacher}
+                        · Lokaal ${l.room}
+                        · Klas ${l.className}
                     </span>
 
                 </div>
-
-                <button
-                    class="btn-delete"
-                    onclick="deleteLesson(${index})">
-                    ×
-                </button>
 
             </div>
 
@@ -1135,9 +1249,265 @@ function renderSchedule() {
 
         });
 
-        html += `</div>`;
+        html += "</div>";
 
         container.innerHTML += html;
+
+    });
+
+}
+
+
+/* =====================================================
+   HUISWERK
+===================================================== */
+
+function renderHomework() {
+
+    const list =
+        document.getElementById("tasksList");
+
+    list.innerHTML = "";
+
+    data.homework.forEach(h => {
+
+        list.innerHTML += `
+
+        <div class="task">
+
+            <div style="flex:1">
+
+                <strong>
+                    ${h.title}
+                </strong>
+
+                <div style="color:#777;font-size:13px;margin-top:4px">
+                    ${h.subject}
+                    · ${h.date}
+                </div>
+
+            </div>
+
+            ${
+                h.notDone
+                ? `<span class="status status-absent">
+                    Niet gemaakt
+                   </span>`
+                : `<span class="status status-present">
+                    Klaar
+                   </span>`
+            }
+
+        </div>
+
+        `;
+
+    });
+
+    const open =
+        data.homework.filter(h => !h.notDone);
+
+    document.getElementById("homeTasks")
+        .textContent = open.length;
+
+}
+
+
+/* =====================================================
+   AANWEZIGHEID
+===================================================== */
+
+function renderAttendance() {
+
+    const list =
+        document.getElementById("attendanceList");
+
+    list.innerHTML = "";
+
+    let present = 0;
+    let late = 0;
+    let absent = 0;
+
+    data.attendance.forEach(a => {
+
+        if (a.status === "Aanwezig") present++;
+        if (a.status === "Te laat") late++;
+        if (a.status === "Afwezig") absent++;
+
+        let cls = "status-present";
+
+        if (a.status === "Te laat")
+            cls = "status-late";
+
+        if (a.status === "Afwezig")
+            cls = "status-absent";
+
+        if (a.status === "Geoorloofd afwezig")
+            cls = "status-excused";
+
+        list.innerHTML += `
+
+        <div class="attendance-row">
+
+            <div style="flex:1">
+
+                <strong>${a.date}</strong>
+
+                <div style="color:#777;font-size:13px">
+                    ${a.subject}
+                </div>
+
+            </div>
+
+            <span class="status ${cls}">
+                ${a.status}
+            </span>
+
+        </div>
+
+        `;
+
+    });
+
+    document.getElementById("presentCount")
+        .textContent = present;
+
+    document.getElementById("lateCount")
+        .textContent = late;
+
+    document.getElementById("absentCount")
+        .textContent = absent;
+
+}
+
+
+/* =====================================================
+   LOKALEN
+===================================================== */
+
+function renderRooms() {
+
+    const list =
+        document.getElementById("roomsList");
+
+    const rooms = [
+        ...new Set(
+            data.subjects.map(s => s.room)
+            .concat(data.lessons.map(l => l.room))
+        )
+    ];
+
+    list.innerHTML = rooms.length
+        ? rooms.map(r => `
+            <div class="task">
+                🏫 <strong>Lokaal ${r}</strong>
+            </div>
+        `).join("")
+        : `<p class="empty">Geen lokalen.</p>`;
+
+}
+
+
+/* =====================================================
+   ADMIN: KLASSEN
+===================================================== */
+
+function renderAdminClasses() {
+
+    const list =
+        document.getElementById("classesList");
+
+    list.innerHTML = "";
+
+    data.classes.forEach((c, index) => {
+
+        list.innerHTML += `
+
+        <div class="class-row">
+
+            <div style="flex:1">
+
+                <strong>Klas ${c.name}</strong>
+
+                <div style="color:#777;font-size:13px">
+                    ${c.students.length} leerling(en)
+                </div>
+
+            </div>
+
+            <button
+                class="btn btn-small btn-danger"
+                onclick="deleteClass(${index})">
+                Verwijder
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+function deleteClass(index) {
+
+    if (!confirm(
+        "Weet je zeker dat je deze klas wilt verwijderen?"
+    )) return;
+
+    data.classes.splice(index, 1);
+
+    save();
+    renderAll();
+
+}
+
+
+/* =====================================================
+   ADMIN: ROOSTER
+===================================================== */
+
+function renderAdminSchedule() {
+
+    const list =
+        document.getElementById("adminScheduleList");
+
+    list.innerHTML = "";
+
+    data.lessons.forEach((l, index) => {
+
+        list.innerHTML += `
+
+        <div class="lesson">
+
+            <div class="lesson-time">
+                ${l.time}
+            </div>
+
+            <div class="lesson-info">
+
+                <strong>
+                    ${l.day} · ${l.subject}
+                </strong>
+
+                <span>
+                    Klas ${l.className}
+                    · ${l.teacher}
+                    · lokaal ${l.room}
+                </span>
+
+            </div>
+
+            <button
+                class="btn btn-small btn-danger"
+                onclick="deleteLesson(${index})">
+                ×
+            </button>
+
+        </div>
+
+        `;
 
     });
 
@@ -1154,55 +1524,107 @@ function deleteLesson(index) {
 }
 
 
-/* =========================
-   TAKEN
-========================= */
+/* =====================================================
+   ADMIN: CIJFERS
+===================================================== */
 
-function renderTasks() {
+function renderAdminGrades() {
+
+    const table =
+        document.getElementById("adminGradesTable");
+
+    table.innerHTML = "";
+
+    data.grades.forEach((g, index) => {
+
+        table.innerHTML += `
+
+        <tr>
+
+            <td>${g.className}</td>
+            <td>${g.student}</td>
+            <td>${g.subject}</td>
+            <td>${g.grade}</td>
+            <td>${g.weight}</td>
+
+            <td>
+
+                <button
+                    class="btn btn-small btn-danger"
+                    onclick="deleteGrade(${index})">
+                    Verwijder
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function deleteGrade(index) {
+
+    data.grades.splice(index, 1);
+
+    save();
+    renderAll();
+
+}
+
+
+/* =====================================================
+   ADMIN: AANWEZIGHEID
+===================================================== */
+
+function renderAdminAttendance() {
 
     const list =
-        document.getElementById("tasksList");
-
-    const homeList =
-        document.getElementById("homeTaskList");
+        document.getElementById("adminAttendanceList");
 
     list.innerHTML = "";
-    homeList.innerHTML = "";
 
-    const openTasks =
-        data.tasks.filter(t => !t.done);
+    data.attendance.forEach((a, index) => {
 
-    document.getElementById("homeTasks")
-        .textContent = openTasks.length;
+        let cls = "status-present";
 
-    if (data.tasks.length === 0) {
+        if (a.status === "Te laat")
+            cls = "status-late";
 
-        list.innerHTML =
-            "<p>Geen taken.</p>";
+        if (a.status === "Afwezig")
+            cls = "status-absent";
 
-    }
-
-    data.tasks.forEach((task, index) => {
+        if (a.status === "Geoorloofd afwezig")
+            cls = "status-excused";
 
         list.innerHTML += `
 
-        <div class="task ${task.done ? "done" : ""}">
+        <div class="attendance-row">
 
-            <input
-                type="checkbox"
-                ${task.done ? "checked" : ""}
-                onchange="toggleTask(${index})">
+            <div style="flex:1">
 
-            <span>
-                ${task.title}
-                <small style="color:#999">
-                    · ${task.date || "Geen datum"}
-                </small>
+                <strong>
+                    ${a.student}
+                </strong>
+
+                <div style="color:#777;font-size:13px">
+                    Klas ${a.className}
+                    · ${a.subject}
+                    · ${a.date}
+                </div>
+
+            </div>
+
+            <span class="status ${cls}">
+                ${a.status}
             </span>
 
             <button
-                class="btn-delete"
-                onclick="deleteTask(${index})">
+                class="btn btn-small btn-danger"
+                onclick="deleteAttendance(${index})">
                 ×
             </button>
 
@@ -1212,42 +1634,12 @@ function renderTasks() {
 
     });
 
-
-    if (openTasks.length === 0) {
-
-        homeList.innerHTML =
-            "<p>🎉 Geen openstaande taken!</p>";
-
-    } else {
-
-        openTasks.slice(0, 5).forEach(task => {
-
-            homeList.innerHTML += `
-
-            <div class="task">
-
-                <span>
-                    ${task.title}
-                    <small style="color:#999">
-                        · ${task.date || ""}
-                    </small>
-                </span>
-
-            </div>
-
-            `;
-
-        });
-
-    }
-
 }
 
 
-function toggleTask(index) {
+function deleteAttendance(index) {
 
-    data.tasks[index].done =
-        !data.tasks[index].done;
+    data.attendance.splice(index, 1);
 
     save();
     renderAll();
@@ -1255,71 +1647,63 @@ function toggleTask(index) {
 }
 
 
-function deleteTask(index) {
+/* =====================================================
+   ADMIN: HUISWERK
+===================================================== */
 
-    data.tasks.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =========================
-   AGENDA
-========================= */
-
-function renderAgenda() {
+function renderAdminHomework() {
 
     const list =
-        document.getElementById("agendaList");
+        document.getElementById("adminHomeworkList");
 
     list.innerHTML = "";
 
-    if (data.events.length === 0) {
+    data.homework.forEach((h, index) => {
 
-        list.innerHTML =
-            "<p>Geen afspraken of toetsen.</p>";
+        list.innerHTML += `
 
-        return;
+        <div class="task">
 
-    }
+            <div style="flex:1">
 
-    data.events
-        .sort((a,b) =>
-            a.date.localeCompare(b.date)
-        )
-        .forEach((event, index) => {
+                <strong>${h.title}</strong>
 
-            list.innerHTML += `
-
-            <div class="task">
-
-                <span>
-                    <strong>${event.title}</strong>
-                    <small style="color:#999">
-                        · ${event.date}
-                    </small>
-                </span>
-
-                <button
-                    class="btn-delete"
-                    onclick="deleteEvent(${index})">
-                    ×
-                </button>
+                <div style="color:#777;font-size:13px">
+                    Klas ${h.className}
+                    · ${h.subject}
+                    · ${h.date}
+                </div>
 
             </div>
 
-            `;
+            ${
+                h.notDone
+                ? `<span class="status status-absent">
+                    Niet gemaakt
+                   </span>`
+                : `<span class="status status-present">
+                    Klaar
+                   </span>`
+            }
 
-        });
+            <button
+                class="btn btn-small btn-danger"
+                onclick="deleteHomework(${index})">
+                ×
+            </button>
+
+        </div>
+
+        `;
+
+    });
 
 }
 
 
-function deleteEvent(index) {
+function deleteHomework(index) {
 
-    data.events.splice(index, 1);
+    data.homework.splice(index, 1);
 
     save();
     renderAll();
@@ -1327,49 +1711,9 @@ function deleteEvent(index) {
 }
 
 
-/* =========================
-   LOKALEN
-========================= */
-
-function renderRooms() {
-
-    const container =
-        document.getElementById("roomsList");
-
-    const rooms = [...new Set(
-        data.subjects.map(s => s.room)
-            .concat(
-                data.lessons.map(l => l.room)
-            )
-    )];
-
-    if (rooms.length === 0) {
-
-        container.innerHTML =
-            "<p>Geen lokalen ingesteld.</p>";
-
-        return;
-
-    }
-
-    container.innerHTML = rooms.map(room => `
-
-        <div class="task">
-
-            <span>
-                🏫 <strong>Lokaal ${room}</strong>
-            </span>
-
-        </div>
-
-    `).join("");
-
-}
-
-
-/* =========================
+/* =====================================================
    MODAL
-========================= */
+===================================================== */
 
 function openModal(type) {
 
@@ -1385,44 +1729,103 @@ function openModal(type) {
     modal.classList.add("show");
 
 
-    /* VAK */
+    /* KLAS */
 
-    if (type === "subject") {
+    if (type === "class") {
 
-        title.textContent =
-            "Nieuw vak";
+        title.textContent = "Nieuwe klas";
 
         content.innerHTML = `
 
         <div class="form-group">
-            <label>Vak</label>
-            <input id="inputName"
-                placeholder="Bijv. Wiskunde">
+            <label>Klasnaam</label>
+            <input id="className"
+                   placeholder="Bijv. 3B">
         </div>
 
         <div class="form-group">
-            <label>Docent</label>
-            <input id="inputTeacher"
-                placeholder="Bijv. Dhr. Jansen">
-        </div>
-
-        <div class="form-group">
-            <label>Lokaal</label>
-            <input id="inputRoom"
-                placeholder="Bijv. B204">
+            <label>Leerlingen</label>
+            <textarea id="classStudents"
+                      placeholder="Eén leerling per regel"></textarea>
         </div>
 
         <div class="modal-buttons">
 
-            <button
-                class="cancel"
-                onclick="closeModal()">
+            <button class="btn btn-light"
+                    onclick="closeModal()">
                 Annuleren
             </button>
 
-            <button
-                class="btn"
-                onclick="addSubject()">
+            <button class="btn"
+                    onclick="addClass()">
+                Klas maken
+            </button>
+
+        </div>
+
+        `;
+
+    }
+
+
+    /* LES */
+
+    if (type === "lesson") {
+
+        title.textContent = "Nieuwe les";
+
+        content.innerHTML = `
+
+        <div class="form-group">
+            <label>Klas</label>
+            <select id="lessonClass">
+                ${classOptions()}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Dag</label>
+            <select id="lessonDay">
+                <option>Maandag</option>
+                <option>Dinsdag</option>
+                <option>Woensdag</option>
+                <option>Donderdag</option>
+                <option>Vrijdag</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Tijd</label>
+            <input id="lessonTime" type="time">
+        </div>
+
+        <div class="form-group">
+            <label>Vak</label>
+            <input id="lessonSubject"
+                   placeholder="Bijv. Wiskunde">
+        </div>
+
+        <div class="form-group">
+            <label>Docent</label>
+            <input id="lessonTeacher"
+                   placeholder="Bijv. Dhr. Jansen">
+        </div>
+
+        <div class="form-group">
+            <label>Lokaal</label>
+            <input id="lessonRoom"
+                   placeholder="Bijv. B204">
+        </div>
+
+        <div class="modal-buttons">
+
+            <button class="btn btn-light"
+                    onclick="closeModal()">
+                Annuleren
+            </button>
+
+            <button class="btn"
+                    onclick="addLesson()">
                 Toevoegen
             </button>
 
@@ -1437,47 +1840,58 @@ function openModal(type) {
 
     if (type === "grade") {
 
-        title.textContent =
-            "Nieuw cijfer";
+        title.textContent = "Nieuw cijfer";
 
         content.innerHTML = `
 
         <div class="form-group">
+            <label>Klas</label>
+            <select id="gradeClass"
+                    onchange="updateStudentOptions()">
+                ${classOptions()}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Leerling</label>
+            <select id="gradeStudent">
+                ${studentOptions()}
+            </select>
+        </div>
+
+        <div class="form-group">
             <label>Vak</label>
             <input id="gradeSubject"
-                placeholder="Bijv. Wiskunde">
+                   placeholder="Bijv. Wiskunde">
         </div>
 
         <div class="form-group">
             <label>Cijfer</label>
             <input id="gradeValue"
-                type="number"
-                min="1"
-                max="10"
-                step="0.1"
-                placeholder="7.5">
+                   type="number"
+                   min="1"
+                   max="10"
+                   step="0.1">
         </div>
 
         <div class="form-group">
             <label>Weging</label>
             <input id="gradeWeight"
-                type="number"
-                min="1"
-                value="1">
+                   type="number"
+                   min="1"
+                   value="1">
         </div>
 
         <div class="modal-buttons">
 
-            <button
-                class="cancel"
-                onclick="closeModal()">
+            <button class="btn btn-light"
+                    onclick="closeModal()">
                 Annuleren
             </button>
 
-            <button
-                class="btn"
-                onclick="addGrade()">
-                Toevoegen
+            <button class="btn"
+                    onclick="addGrade()">
+                Opslaan
             </button>
 
         </div>
@@ -1487,149 +1901,132 @@ function openModal(type) {
     }
 
 
-    /* TAAK */
+    /* AANWEZIGHEID */
 
-    if (type === "task") {
+    if (type === "attendance") {
 
-        title.textContent =
-            "Nieuwe taak";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Taak</label>
-            <input id="taskTitle"
-                placeholder="Bijv. Huiswerk maken">
-        </div>
-
-        <div class="form-group">
-            <label>Datum</label>
-            <input id="taskDate"
-                type="date">
-        </div>
-
-        <div class="modal-buttons">
-
-            <button
-                class="cancel"
-                onclick="closeModal()">
-                Annuleren
-            </button>
-
-            <button
-                class="btn"
-                onclick="addTask()">
-                Toevoegen
-            </button>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* AGENDA */
-
-    if (type === "event") {
-
-        title.textContent =
-            "Nieuwe gebeurtenis";
+        title.textContent = "Aanwezigheid registreren";
 
         content.innerHTML = `
 
         <div class="form-group">
-            <label>Naam</label>
-            <input id="eventTitle"
-                placeholder="Bijv. Toets Engels">
-        </div>
+            <label>Klas</label>
 
-        <div class="form-group">
-            <label>Datum</label>
-            <input id="eventDate"
-                type="date">
-        </div>
-
-        <div class="modal-buttons">
-
-            <button
-                class="cancel"
-                onclick="closeModal()">
-                Annuleren
-            </button>
-
-            <button
-                class="btn"
-                onclick="addEvent()">
-                Toevoegen
-            </button>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* LES */
-
-    if (type === "lesson") {
-
-        title.textContent =
-            "Nieuwe les";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Dag</label>
-
-            <select id="lessonDay">
-
-                <option>Maandag</option>
-                <option>Dinsdag</option>
-                <option>Woensdag</option>
-                <option>Donderdag</option>
-                <option>Vrijdag</option>
-
+            <select id="attendanceClass"
+                    onchange="updateAttendanceStudents()">
+                ${classOptions()}
             </select>
         </div>
 
         <div class="form-group">
-            <label>Tijd</label>
-            <input id="lessonTime"
-                type="time">
+            <label>Leerling</label>
+
+            <select id="attendanceStudent">
+                ${studentOptions()}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Datum</label>
+
+            <input id="attendanceDate"
+                   type="date"
+                   value="${new Date().toISOString().slice(0,10)}">
         </div>
 
         <div class="form-group">
             <label>Vak</label>
-            <input id="lessonSubject"
-                placeholder="Bijv. Wiskunde">
+
+            <input id="attendanceSubject"
+                   placeholder="Bijv. Wiskunde">
         </div>
 
         <div class="form-group">
-            <label>Docent</label>
-            <input id="lessonTeacher"
-                placeholder="Bijv. Dhr. Jansen">
-        </div>
+            <label>Status</label>
 
-        <div class="form-group">
-            <label>Lokaal</label>
-            <input id="lessonRoom"
-                placeholder="Bijv. B204">
+            <select id="attendanceStatus">
+
+                <option>Aanwezig</option>
+                <option>Te laat</option>
+                <option>Afwezig</option>
+                <option>Geoorloofd afwezig</option>
+
+            </select>
+
         </div>
 
         <div class="modal-buttons">
 
-            <button
-                class="cancel"
-                onclick="closeModal()">
+            <button class="btn btn-light"
+                    onclick="closeModal()">
                 Annuleren
             </button>
 
-            <button
-                class="btn"
-                onclick="addLesson()">
-                Toevoegen
+            <button class="btn"
+                    onclick="addAttendance()">
+                Opslaan
+            </button>
+
+        </div>
+
+        `;
+
+    }
+
+
+    /* HUISWERK */
+
+    if (type === "homework") {
+
+        title.textContent = "Nieuw huiswerk";
+
+        content.innerHTML = `
+
+        <div class="form-group">
+            <label>Klas</label>
+            <select id="homeworkClass">
+                ${classOptions()}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Vak</label>
+            <input id="homeworkSubject"
+                   placeholder="Bijv. Nederlands">
+        </div>
+
+        <div class="form-group">
+            <label>Opdracht</label>
+            <input id="homeworkTitle"
+                   placeholder="Bijv. Hoofdstuk 5 maken">
+        </div>
+
+        <div class="form-group">
+            <label>Inleverdatum</label>
+            <input id="homeworkDate"
+                   type="date">
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                <input id="homeworkNotDone"
+                       type="checkbox">
+                Markeer als niet gemaakt
+            </label>
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button class="btn btn-light"
+                    onclick="closeModal()">
+                Annuleren
+            </button>
+
+            <button class="btn"
+                    onclick="addHomework()">
+                Opslaan
             </button>
 
         </div>
@@ -1649,28 +2046,113 @@ function closeModal() {
 }
 
 
-/* =========================
-   ADD FUNCTIONS
-========================= */
+/* =====================================================
+   SELECT OPTIONS
+===================================================== */
 
-function addSubject() {
+function classOptions() {
+
+    if (!data.classes.length)
+        return `<option value="">Geen klassen</option>`;
+
+    return data.classes.map(c =>
+        `<option value="${c.name}">
+            ${c.name}
+        </option>`
+    ).join("");
+
+}
+
+
+function studentOptions() {
+
+    if (!data.classes.length)
+        return `<option value="">Geen leerlingen</option>`;
+
+    const students =
+        data.classes[0].students;
+
+    return students.map(s =>
+        `<option value="${s}">
+            ${s}
+        </option>`
+    ).join("");
+
+}
+
+
+function updateStudentOptions() {
+
+    const className =
+        document.getElementById("gradeClass").value;
+
+    const c =
+        data.classes.find(x => x.name === className);
+
+    const select =
+        document.getElementById("gradeStudent");
+
+    select.innerHTML =
+        c
+        ? c.students.map(s =>
+            `<option value="${s}">
+                ${s}
+            </option>`
+          ).join("")
+        : "";
+
+}
+
+
+function updateAttendanceStudents() {
+
+    const className =
+        document.getElementById("attendanceClass").value;
+
+    const c =
+        data.classes.find(x => x.name === className);
+
+    const select =
+        document.getElementById("attendanceStudent");
+
+    select.innerHTML =
+        c
+        ? c.students.map(s =>
+            `<option value="${s}">
+                ${s}
+            </option>`
+          ).join("")
+        : "";
+
+}
+
+
+/* =====================================================
+   ADD KLAS
+===================================================== */
+
+function addClass() {
 
     const name =
-        document.getElementById("inputName").value;
+        document.getElementById("className").value.trim();
 
-    const teacher =
-        document.getElementById("inputTeacher").value;
-
-    const room =
-        document.getElementById("inputRoom").value;
+    const students =
+        document.getElementById("classStudents")
+        .value
+        .split("\n")
+        .map(x => x.trim())
+        .filter(Boolean);
 
     if (!name)
-        return alert("Vul een vak in.");
+        return alert("Vul een klasnaam in.");
 
-    data.subjects.push({
+    if (data.classes.some(c => c.name === name))
+        return alert("Deze klas bestaat al.");
+
+    data.classes.push({
+        id: Date.now(),
         name,
-        teacher,
-        room
+        students
     });
 
     save();
@@ -1680,109 +2162,77 @@ function addSubject() {
 }
 
 
-function addGrade() {
-
-    const subject =
-        document.getElementById("gradeSubject").value;
-
-    const grade =
-        Number(document.getElementById("gradeValue").value);
-
-    const weight =
-        Number(document.getElementById("gradeWeight").value);
-
-    if (!subject || !grade)
-        return alert("Vul alle gegevens in.");
-
-    if (grade < 1 || grade > 10)
-        return alert("Een cijfer moet tussen 1 en 10 zijn.");
-
-    data.grades.push({
-        subject,
-        grade,
-        weight: weight || 1
-    });
-
-    save();
-    closeModal();
-    renderAll();
-
-}
-
-
-function addTask() {
-
-    const title =
-        document.getElementById("taskTitle").value;
-
-    const date =
-        document.getElementById("taskDate").value;
-
-    if (!title)
-        return alert("Vul een taak in.");
-
-    data.tasks.push({
-        title,
-        date,
-        done: false
-    });
-
-    save();
-    closeModal();
-    renderAll();
-
-}
-
-
-function addEvent() {
-
-    const title =
-        document.getElementById("eventTitle").value;
-
-    const date =
-        document.getElementById("eventDate").value;
-
-    if (!title || !date)
-        return alert("Vul alle gegevens in.");
-
-    data.events.push({
-        title,
-        date
-    });
-
-    save();
-    closeModal();
-    renderAll();
-
-}
-
+/* =====================================================
+   ADD LES
+===================================================== */
 
 function addLesson() {
 
-    const day =
-        document.getElementById("lessonDay").value;
+    const lesson = {
 
-    const time =
-        document.getElementById("lessonTime").value;
+        className:
+            document.getElementById("lessonClass").value,
 
-    const subject =
-        document.getElementById("lessonSubject").value;
+        day:
+            document.getElementById("lessonDay").value,
 
-    const teacher =
-        document.getElementById("lessonTeacher").value;
+        time:
+            document.getElementById("lessonTime").value,
 
-    const room =
-        document.getElementById("lessonRoom").value;
+        subject:
+            document.getElementById("lessonSubject").value,
 
-    if (!time || !subject)
+        teacher:
+            document.getElementById("lessonTeacher").value,
+
+        room:
+            document.getElementById("lessonRoom").value
+
+    };
+
+    if (!lesson.time || !lesson.subject)
         return alert("Vul minimaal tijd en vak in.");
 
-    data.lessons.push({
-        day,
-        time,
-        subject,
-        teacher,
-        room
+    data.lessons.push(lesson);
+
+    save();
+    closeModal();
+    renderAll();
+
+}
+
+
+/* =====================================================
+   ADD CIJFER
+===================================================== */
+
+function addGrade() {
+
+    const grade = Number(
+        document.getElementById("gradeValue").value
+    );
+
+    if (!grade || grade < 1 || grade > 10)
+        return alert("Vul een geldig cijfer tussen 1 en 10 in.");
+
+    data.grades.push({
+
+        className:
+            document.getElementById("gradeClass").value,
+
+        student:
+            document.getElementById("gradeStudent").value,
+
+        subject:
+            document.getElementById("gradeSubject").value,
+
+        grade,
+
+        weight:
+            Number(
+                document.getElementById("gradeWeight").value
+            ) || 1
+
     });
 
     save();
@@ -1792,9 +2242,93 @@ function addLesson() {
 }
 
 
-/* =========================
+/* =====================================================
+   ADD AANWEZIGHEID
+===================================================== */
+
+function addAttendance() {
+
+    data.attendance.push({
+
+        className:
+            document.getElementById("attendanceClass").value,
+
+        student:
+            document.getElementById("attendanceStudent").value,
+
+        date:
+            document.getElementById("attendanceDate").value,
+
+        subject:
+            document.getElementById("attendanceSubject").value,
+
+        status:
+            document.getElementById("attendanceStatus").value
+
+    });
+
+    save();
+    closeModal();
+    renderAll();
+
+}
+
+
+/* =====================================================
+   ADD HUISWERK
+===================================================== */
+
+function addHomework() {
+
+    const title =
+        document.getElementById("homeworkTitle").value;
+
+    if (!title)
+        return alert("Vul een opdracht in.");
+
+    data.homework.push({
+
+        className:
+            document.getElementById("homeworkClass").value,
+
+        subject:
+            document.getElementById("homeworkSubject").value,
+
+        title,
+
+        date:
+            document.getElementById("homeworkDate").value,
+
+        notDone:
+            document.getElementById("homeworkNotDone").checked
+
+    });
+
+    save();
+    closeModal();
+    renderAll();
+
+}
+
+
+/* =====================================================
+   ADMIN RENDER
+===================================================== */
+
+function renderAdmin() {
+
+    renderAdminClasses();
+    renderAdminSchedule();
+    renderAdminGrades();
+    renderAdminAttendance();
+    renderAdminHomework();
+
+}
+
+
+/* =====================================================
    TODAY
-========================= */
+===================================================== */
 
 function renderToday() {
 
@@ -1812,9 +2346,7 @@ function renderToday() {
         days[new Date().getDay()];
 
     const lessons =
-        data.lessons.filter(
-            l => l.day === today
-        );
+        data.lessons.filter(l => l.day === today);
 
     document.getElementById("homeLessons")
         .textContent = lessons.length;
@@ -1822,10 +2354,10 @@ function renderToday() {
     const container =
         document.getElementById("todayLessons");
 
-    if (lessons.length === 0) {
+    if (!lessons.length) {
 
         container.innerHTML =
-            "Geen lessen vandaag.";
+            `<p class="empty">Geen lessen vandaag.</p>`;
 
         return;
 
@@ -1847,6 +2379,7 @@ function renderToday() {
                 <span>
                     ${l.teacher}
                     · Lokaal ${l.room}
+                    · Klas ${l.className}
                 </span>
 
             </div>
@@ -1858,40 +2391,46 @@ function renderToday() {
 }
 
 
-/* =========================
-   EVERYTHING
-========================= */
+/* =====================================================
+   ALLES RENDEREN
+===================================================== */
 
 function renderAll() {
+
+    updateDate();
 
     renderGrades();
     renderSubjects();
     renderSchedule();
-    renderTasks();
-    renderAgenda();
+    renderHomework();
+    renderAttendance();
     renderRooms();
     renderToday();
-    updateDate();
+    renderAdmin();
 
 }
 
 
-/* START */
-
-renderAll();
-
-
-/* MODAL CLOSE */
+/* =====================================================
+   MODAL SLUITEN
+===================================================== */
 
 document.getElementById("modal")
-    .addEventListener("click", function(e) {
+.addEventListener("click", function(e) {
 
-        if (e.target === this)
-            closeModal();
+    if (e.target === this)
+        closeModal();
 
-    });
+});
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderAll();
 
 </script>
 
 </body>
-</html>
+    </html>
