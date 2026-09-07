@@ -1,1 +1,89 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mijn School</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+    <aside class="sidebar">
+        <h1>🎓 Mijn School</h1>
+
+        <nav>
+            <button onclick="showPage('home')">🏠 Home</button>
+            <button onclick="showPage('rooster')">📅 Rooster</button>
+            <button onclick="showPage('cijfers')">📊 Cijfers</button>
+            <button onclick="showPage('vakken')">📚 Vakken</button>
+            <button onclick="showPage('taken')">✅ Taken</button>
+            <button onclick="showPage('agenda')">🗓️ Agenda</button>
+            <button onclick="showPage('lokalen')">🏫 Lokalen</button>
+        </nav>
+    </aside>
+
+    <main>
+
+        <section id="home" class="page active">
+            <h2>Goedemorgen! 👋</h2>
+            <p>Welkom bij jouw persoonlijke school-app.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>📅 Vandaag</h3>
+                    <p id="today"></p>
+                </div>
+
+                <div class="card">
+                    <h3>📚 Volgende les</h3>
+                    <p>Nog geen lessen ingesteld</p>
+                </div>
+
+                <div class="card">
+                    <h3>📝 Openstaande taken</h3>
+                    <p>0 taken</p>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Gemiddelde</h3>
+                    <p>Nog geen cijfers</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="rooster" class="page">
+            <h2>📅 Rooster</h2>
+            <p>Hier komt straks je volledige rooster.</p>
+        </section>
+
+        <section id="cijfers" class="page">
+            <h2>📊 Cijfers</h2>
+            <p>Hier komen straks al je cijfers en gemiddelden.</p>
+        </section>
+
+        <section id="vakken" class="page">
+            <h2>📚 Vakken</h2>
+            <p>Hier komen straks je vakken, docenten en lokalen.</p>
+        </section>
+
+        <section id="taken" class="page">
+            <h2>✅ Taken</h2>
+            <p>Hier komen straks je huiswerk en opdrachten.</p>
+        </section>
+
+        <section id="agenda" class="page">
+            <h2>🗓️ Agenda</h2>
+            <p>Hier komen straks toetsen, deadlines en afspraken.</p>
+        </section>
+
+        <section id="lokalen" class="page">
+            <h2>🏫 Lokalen</h2>
+            <p>Hier komt straks een overzicht van je lokalen.</p>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
