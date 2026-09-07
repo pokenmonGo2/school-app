@@ -3,404 +3,1217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mijn School</title>
+<title>SchoolFlow</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#070a14;
+    --bg2:#0d1222;
+    --panel:#11182b;
+    --panel2:#151d34;
+    --text:#f6f7ff;
+    --muted:#8992ad;
+    --primary:#795cff;
+    --primary2:#4e8cff;
+    --cyan:#35d9ff;
+    --green:#32dda0;
+    --yellow:#ffd166;
+    --red:#ff5d7d;
+    --orange:#ff9f43;
+    --border:rgba(255,255,255,.08);
+    --shadow:0 25px 70px rgba(0,0,0,.35);
+    --radius:20px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f6fa;
-    color: #171717;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-.app {
-    display: flex;
-    min-height: 100vh;
+html{
+    scroll-behavior:smooth;
 }
 
-.sidebar {
-    width: 250px;
-    background: white;
-    border-right: 1px solid #e5e5e5;
-    padding: 25px 15px;
-    position: fixed;
-    height: 100vh;
+body{
+    min-height:100vh;
+    font-family:Inter,Arial,sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 10% 10%,rgba(121,92,255,.18),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(53,217,255,.10),transparent 25%),
+        radial-gradient(circle at 70% 100%,rgba(78,140,255,.12),transparent 30%),
+        var(--bg);
+    overflow-x:hidden;
 }
 
-.logo {
-    font-size: 23px;
-    font-weight: bold;
-    padding: 10px;
-    margin-bottom: 25px;
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+    background-size:45px 45px;
+    mask-image:linear-gradient(to bottom,#000,transparent);
 }
 
-.nav {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+button,input,select,textarea{
+    font:inherit;
 }
 
-.nav button {
-    border: 0;
-    background: transparent;
-    padding: 13px;
-    border-radius: 10px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 15px;
+button{
+    cursor:pointer;
 }
 
-.nav button:hover,
-.nav button.active {
-    background: #eeeeee;
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+    outline:2px solid var(--primary);
+    outline-offset:2px;
 }
 
-.main {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding: 35px;
+::-webkit-scrollbar{
+    width:8px;
 }
 
-.page {
-    display: none;
+::-webkit-scrollbar-track{
+    background:#080b15;
 }
 
-.page.active {
-    display: block;
+::-webkit-scrollbar-thumb{
+    background:linear-gradient(var(--primary),var(--primary2));
+    border-radius:20px;
 }
 
-.page-title {
-    font-size: 32px;
-    margin-bottom: 7px;
+/* LAYOUT */
+
+.app{
+    min-height:100vh;
 }
 
-.subtitle {
-    color: #777;
-    margin-bottom: 25px;
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:260px;
+    padding:22px 15px;
+    background:rgba(10,14,27,.92);
+    backdrop-filter:blur(25px);
+    border-right:1px solid var(--border);
+    z-index:1000;
+    transition:.3s;
 }
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 10px 25px;
 }
+
+.logo-icon{
+    width:45px;
+    height:45px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 10px 35px rgba(121,92,255,.35);
+    font-size:22px;
+}
+
+.logo-title{
+    font-size:19px;
+    font-weight:800;
+}
+
+.logo-sub{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:3px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.nav-title{
+    color:#626b85;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1.4px;
+    padding:15px 11px 7px;
+    text-transform:uppercase;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav-btn{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:12px 13px;
+    color:#9da5bc;
+    background:transparent;
+    border:0;
+    border-radius:13px;
+    text-align:left;
+    font-size:12px;
+    font-weight:650;
+    transition:.22s;
+}
+
+.nav-btn:hover{
+    color:#fff;
+    background:rgba(255,255,255,.05);
+    transform:translateX(3px);
+}
+
+.nav-btn.active{
+    color:#fff;
+    background:linear-gradient(135deg,rgba(121,92,255,.25),rgba(78,140,255,.12));
+    box-shadow:inset 0 0 0 1px rgba(121,92,255,.15);
+}
+
+.nav-btn.active:before{
+    content:"";
+    position:absolute;
+    left:-15px;
+    top:8px;
+    width:4px;
+    height:calc(100% - 16px);
+    border-radius:0 5px 5px 0;
+    background:linear-gradient(var(--primary),var(--cyan));
+    box-shadow:0 0 15px var(--primary);
+}
+
+.nav-icon{
+    width:21px;
+    text-align:center;
+    font-size:17px;
+}
+
+.admin-nav{
+    color:#ff9eb3;
+}
+
+.main{
+    margin-left:260px;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:500;
+    min-height:75px;
+    padding:0 30px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(7,10,20,.72);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+}
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.mobile-menu{
+    display:none;
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.04);
+    color:#fff;
+}
+
+.top-title{
+    font-size:20px;
+    font-weight:800;
+}
+
+.top-subtitle{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+.top-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.date{
+    padding:9px 12px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.avatar{
+    width:39px;
+    height:39px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    font-size:12px;
+    font-weight:800;
+}
+
+.content{
+    max-width:1550px;
+    margin:auto;
+    padding:30px;
+}
+
+/* PAGES */
+
+.page{
+    display:none;
+    animation:pageIn .35s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:32px;
+    margin-bottom:20px;
+    border:1px solid rgba(121,92,255,.2);
+    border-radius:var(--radius);
+    background:
+        linear-gradient(135deg,rgba(121,92,255,.20),rgba(78,140,255,.10),rgba(53,217,255,.05));
+    box-shadow:var(--shadow);
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    right:-100px;
+    top:-160px;
+    border-radius:50%;
+    background:rgba(121,92,255,.2);
+    filter:blur(20px);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.hero h1{
+    font-size:clamp(27px,4vw,40px);
+    letter-spacing:-1.5px;
+    margin-bottom:8px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#aa97ff,#75a9ff,#4ce2ff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:650px;
+    font-size:13px;
+    line-height:1.7;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    gap:17px;
+}
+
+.g2{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.g3{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.g4{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+/* CARDS */
 
 .card,
-.section {
-    background: white;
-    border: 1px solid #e5e5e5;
-    border-radius: 17px;
-    padding: 22px;
+.stat{
+    background:linear-gradient(145deg,rgba(20,27,49,.92),rgba(11,15,29,.9));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:0 15px 45px rgba(0,0,0,.18);
 }
 
-.card-title {
-    color: #777;
-    font-size: 14px;
-    margin-bottom: 12px;
+.card{
+    overflow:hidden;
 }
 
-.card-number {
-    font-size: 28px;
-    font-weight: bold;
+.card-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:19px 21px;
+    border-bottom:1px solid var(--border);
 }
 
-.section {
-    margin-top: 25px;
+.card-title{
+    font-size:14px;
+    font-weight:750;
 }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
+.card-sub{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
 }
 
-.btn {
-    background: #171717;
-    color: white;
-    border: 0;
-    padding: 11px 17px;
-    border-radius: 10px;
-    cursor: pointer;
+.card-body{
+    padding:21px;
 }
 
-.btn:hover {
-    opacity: .85;
+/* STATS */
+
+.stat{
+    position:relative;
+    overflow:hidden;
+    padding:20px;
+    transition:.25s;
 }
 
-.btn-light {
-    background: #eee;
-    color: #222;
+.stat:hover{
+    transform:translateY(-5px);
+    border-color:rgba(121,92,255,.3);
+    box-shadow:0 22px 50px rgba(0,0,0,.3);
 }
 
-.btn-danger {
-    background: #d93636;
-    color: white;
+.stat-icon{
+    width:41px;
+    height:41px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:rgba(121,92,255,.12);
+    margin-bottom:15px;
+    font-size:18px;
 }
 
-.btn-small {
-    padding: 7px 10px;
-    font-size: 12px;
+.stat-label{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:600;
 }
 
-.lesson,
-.task,
-.attendance-row,
-.class-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 14px;
-    background: #f7f7f7;
-    border-radius: 12px;
-    margin-bottom: 8px;
+.stat-number{
+    margin-top:4px;
+    font-size:27px;
+    font-weight:800;
 }
 
-.lesson-time {
-    width: 65px;
-    font-weight: bold;
+.green .stat-icon{
+    background:rgba(50,221,160,.10);
 }
 
-.lesson-info {
-    flex: 1;
+.green .stat-number{
+    color:var(--green);
 }
 
-.lesson-info strong {
-    display: block;
-    margin-bottom: 4px;
+.yellow .stat-icon{
+    background:rgba(255,209,102,.10);
 }
 
-.lesson-info span {
-    color: #777;
-    font-size: 13px;
+.yellow .stat-number{
+    color:var(--yellow);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.red .stat-icon{
+    background:rgba(255,93,125,.10);
 }
 
-th,
-td {
-    padding: 13px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+.red .stat-number{
+    color:var(--red);
 }
 
-th {
-    color: #777;
-    font-size: 13px;
+.cyan .stat-icon{
+    background:rgba(53,217,255,.10);
 }
 
-.grade-good {
-    color: #17833b;
-    font-weight: bold;
+.cyan .stat-number{
+    color:var(--cyan);
 }
 
-.grade-normal {
-    color: #bd7b00;
-    font-weight: bold;
+/* BUTTONS */
+
+.btn{
+    min-height:40px;
+    padding:0 14px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:rgba(255,255,255,.045);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    transition:.18s;
 }
 
-.grade-low {
-    color: #c73838;
-    font-weight: bold;
+.btn:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.14);
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
 }
 
-.status {
-    display: inline-block;
-    padding: 6px 9px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
+.btn:active{
+    transform:translateY(1px) scale(.97);
 }
 
-.status-present {
-    background: #e1f4e7;
-    color: #197238;
+.primary{
+    border:0;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 8px 25px rgba(121,92,255,.22);
 }
 
-.status-late {
-    background: #fff1cf;
-    color: #956600;
+.primary:hover{
+    box-shadow:0 12px 35px rgba(121,92,255,.38);
 }
 
-.status-absent {
-    background: #ffe1e1;
-    color: #a52828;
+.success{
+    border:0;
+    color:#061b14;
+    background:linear-gradient(135deg,#20c997,var(--green));
 }
 
-.status-excused {
-    background: #e7e7ff;
-    color: #4d4da0;
+.danger{
+    border:0;
+    background:linear-gradient(135deg,#ff5275,#ff7d97);
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.45);
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+.warning{
+    border:0;
+    color:#241a00;
+    background:linear-gradient(135deg,#ffad42,var(--yellow));
 }
 
-.modal.show {
-    display: flex;
+.small{
+    min-height:32px;
+    padding:0 10px;
+    font-size:10px;
 }
 
-.modal-box {
-    background: white;
-    width: 92%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 18px;
-    padding: 25px;
+/* ACTION BAR */
+
+.actions{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:17px;
 }
 
-.modal-box h2 {
-    margin-bottom: 20px;
+.action-group{
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
-.form-group {
-    margin-bottom: 15px;
+/* INPUTS */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
 }
 
-.form-group label {
-    display: block;
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 6px;
+.form-group{
+    margin-bottom:14px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #ddd;
-    border-radius: 9px;
-    font-family: inherit;
+label{
+    display:block;
+    color:#aab2c9;
+    font-size:10px;
+    font-weight:650;
+    margin-bottom:6px;
 }
 
-.form-group textarea {
-    min-height: 90px;
-    resize: vertical;
+input,
+select,
+textarea{
+    width:100%;
+    color:#fff;
+    background:#090d1b;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:11px;
+    padding:11px 12px;
+    font-size:12px;
+    outline:none;
+    transition:.2s;
 }
 
-.modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+input::placeholder,
+textarea::placeholder{
+    color:#59627d;
 }
 
-.admin-lock {
-    max-width: 420px;
-    margin: 50px auto;
-    text-align: center;
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(121,92,255,.09);
 }
 
-.admin-lock .lock-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
+textarea{
+    min-height:90px;
+    resize:vertical;
 }
 
-.admin-menu {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
+select option{
+    background:#11162a;
 }
 
-.admin-card {
-    background: white;
-    border: 1px solid #e5e5e5;
-    border-radius: 15px;
-    padding: 20px;
-    cursor: pointer;
+/* TABLE */
+
+.table-wrap{
+    width:100%;
+    overflow:auto;
 }
 
-.admin-card:hover {
-    background: #f7f7f7;
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:11px;
 }
 
-.admin-card strong {
-    display: block;
-    margin-bottom: 6px;
+th{
+    padding:12px 14px;
+    color:#68718d;
+    background:rgba(255,255,255,.025);
+    border-bottom:1px solid var(--border);
+    text-align:left;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
 }
 
-.admin-card span {
-    color: #777;
-    font-size: 13px;
+td{
+    padding:13px 14px;
+    color:#aeb5c9;
+    border-bottom:1px solid rgba(255,255,255,.045);
 }
 
-.hidden {
-    display: none !important;
+tr:hover td{
+    background:rgba(121,92,255,.035);
+    color:#fff;
 }
 
-.class-selector {
-    margin-bottom: 20px;
+/* BADGES */
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 8px;
+    border-radius:999px;
+    font-size:9px;
+    font-weight:750;
 }
 
-.class-selector select {
-    padding: 11px;
-    border: 1px solid #ddd;
-    border-radius: 9px;
-    min-width: 250px;
+.badge:before{
+    content:"";
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 8px currentColor;
 }
 
-.empty {
-    color: #999;
-    padding: 15px 0;
+.b-green{
+    color:var(--green);
+    background:rgba(50,221,160,.08);
 }
 
-@media(max-width: 900px) {
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
+.b-yellow{
+    color:var(--yellow);
+    background:rgba(255,209,102,.08);
+}
+
+.b-red{
+    color:var(--red);
+    background:rgba(255,93,125,.08);
+}
+
+.b-blue{
+    color:var(--cyan);
+    background:rgba(53,217,255,.08);
+}
+
+.b-purple{
+    color:#aa97ff;
+    background:rgba(121,92,255,.09);
+}
+
+/* SCHEDULE */
+
+.lesson{
+    display:grid;
+    grid-template-columns:70px 1fr auto;
+    align-items:center;
+    gap:15px;
+    padding:14px;
+    margin-bottom:8px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:rgba(255,255,255,.025);
+    transition:.2s;
+}
+
+.lesson:hover{
+    transform:translateX(4px);
+    background:rgba(121,92,255,.055);
+    border-color:rgba(121,92,255,.25);
+}
+
+.lesson-time{
+    color:#747e9a;
+    font-size:10px;
+    font-weight:700;
+}
+
+.lesson-name{
+    font-size:12px;
+    font-weight:750;
+}
+
+.lesson-info{
+    color:#69728d;
+    font-size:9px;
+    margin-top:4px;
+}
+
+.room{
+    color:var(--cyan);
+    background:rgba(53,217,255,.07);
+    padding:6px 8px;
+    border-radius:8px;
+    font-size:9px;
+    font-weight:700;
+}
+
+/* SUBJECT */
+
+.subject{
+    position:relative;
+    padding:20px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    border-radius:17px;
+    background:linear-gradient(145deg,#18213d,#0e1428);
+    transition:.25s;
+}
+
+.subject:before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:3px;
+    background:linear-gradient(90deg,var(--primary),var(--cyan));
+}
+
+.subject:hover{
+    transform:translateY(-5px);
+    border-color:rgba(121,92,255,.28);
+}
+
+.subject-icon{
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:rgba(121,92,255,.13);
+    margin-bottom:14px;
+    font-size:18px;
+}
+
+.subject h3{
+    font-size:13px;
+}
+
+.subject p{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:5px;
+}
+
+/* HOMEWORK */
+
+.homework{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:13px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:rgba(255,255,255,.025);
+    margin-bottom:8px;
+}
+
+.homework-info{
+    flex:1;
+}
+
+.homework-title{
+    font-size:11px;
+    font-weight:700;
+}
+
+.homework-sub{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:3px;
+}
+
+/* ADMIN */
+
+.admin-hero{
+    position:relative;
+    overflow:hidden;
+    padding:27px;
+    margin-bottom:18px;
+    border-radius:var(--radius);
+    background:
+        linear-gradient(135deg,rgba(255,93,125,.11),rgba(121,92,255,.18),rgba(53,217,255,.06));
+    border:1px solid rgba(255,93,125,.14);
+}
+
+.admin-hero h2{
+    font-size:24px;
+}
+
+.admin-hero p{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:6px;
+}
+
+.admin-status{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 9px;
+    border-radius:999px;
+    background:rgba(50,221,160,.08);
+    color:var(--green);
+    font-size:9px;
+    font-weight:800;
+    margin-bottom:11px;
+}
+
+.admin-status:before{
+    content:"";
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 9px var(--green);
+}
+
+.admin-tabs{
+    display:flex;
+    gap:6px;
+    overflow:auto;
+    padding-bottom:3px;
+    margin-bottom:18px;
+}
+
+.admin-tab{
+    flex:none;
+    padding:9px 12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.035);
+    color:#8992ab;
+    font-size:10px;
+    font-weight:700;
+}
+
+.admin-tab:hover{
+    color:#fff;
+}
+
+.admin-tab.active{
+    color:#fff;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    border-color:transparent;
+}
+
+/* MODAL */
+
+.modal-bg{
+    position:fixed;
+    inset:0;
+    z-index:5000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(2,4,10,.78);
+    backdrop-filter:blur(13px);
+}
+
+.modal-bg.show{
+    display:flex;
+}
+
+.modal{
+    width:min(550px,100%);
+    max-height:90vh;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:22px;
+    background:linear-gradient(145deg,#18213b,#0c1122);
+    box-shadow:0 40px 100px rgba(0,0,0,.55);
+    animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:scale(.95) translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+}
+
+.modal-head h2{
+    font-size:16px;
+}
+
+.close{
+    width:33px;
+    height:33px;
+    border:0;
+    border-radius:9px;
+    background:rgba(255,255,255,.05);
+    color:#9aa2b9;
+    font-size:16px;
+    transition:.2s;
+}
+
+.close:hover{
+    color:#fff;
+    background:rgba(255,93,125,.13);
+    transform:rotate(90deg);
+}
+
+.modal-body{
+    padding:20px;
+}
+
+.modal-foot{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    padding:15px 20px;
+    border-top:1px solid var(--border);
+}
+
+/* LOGIN */
+
+.login{
+    width:min(400px,100%);
+    padding:30px;
+    text-align:center;
+    border-radius:23px;
+    background:linear-gradient(145deg,#18213b,#0c1122);
+    border:1px solid var(--border);
+    box-shadow:0 40px 100px rgba(0,0,0,.5);
+}
+
+.login-icon{
+    width:60px;
+    height:60px;
+    display:grid;
+    place-items:center;
+    margin:0 auto 17px;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 15px 35px rgba(121,92,255,.3);
+    font-size:25px;
+}
+
+.login h2{
+    font-size:22px;
+    margin-bottom:7px;
+}
+
+.login p{
+    color:var(--muted);
+    font-size:10px;
+    margin-bottom:22px;
+}
+
+.login .btn{
+    width:100%;
+}
+
+/* TOAST */
+
+.toast-box{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:9000;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.toast{
+    min-width:260px;
+    padding:12px 14px;
+    border-radius:13px;
+    background:rgba(20,27,49,.96);
+    border:1px solid var(--border);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    font-size:10px;
+    font-weight:650;
+    animation:toastIn .25s ease;
+}
+
+@keyframes toastIn{
+    from{
+        opacity:0;
+        transform:translateX(25px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.toast.ok{
+    border-left:3px solid var(--green);
+}
+
+.toast.err{
+    border-left:3px solid var(--red);
+}
+
+.toast.info{
+    border-left:3px solid var(--cyan);
+}
+
+/* EMPTY */
+
+.empty{
+    padding:35px 15px;
+    text-align:center;
+    color:var(--muted);
+}
+
+.empty-icon{
+    width:50px;
+    height:50px;
+    display:grid;
+    place-items:center;
+    margin:0 auto 10px;
+    border-radius:15px;
+    background:rgba(255,255,255,.04);
+    font-size:21px;
+}
+
+.empty h3{
+    color:#b9c0d2;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.empty p{
+    font-size:9px;
+}
+
+/* ATTENDANCE */
+
+.att-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.att{
+    padding:15px;
+    text-align:center;
+    border-radius:14px;
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+}
+
+.att-number{
+    font-size:23px;
+    font-weight:800;
+}
+
+.att-label{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:4px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+    .g4{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .admin-menu {
-        grid-template-columns: repeat(2, 1fr);
+    .g3{
+        grid-template-columns:repeat(2,1fr);
     }
 }
 
-@media(max-width: 700px) {
-    .app {
-        display: block;
+@media(max-width:800px){
+    .sidebar{
+        transform:translateX(-100%);
+        width:270px;
     }
 
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: 0;
-        border-bottom: 1px solid #ddd;
+    .sidebar.open{
+        transform:translateX(0);
     }
 
-    .nav {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+    .main{
+        margin-left:0;
     }
 
-    .main {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
+    .mobile-menu{
+        display:block;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
+    .topbar{
+        padding:0 15px;
     }
 
-    .admin-menu {
-        grid-template-columns: 1fr;
+    .date{
+        display:none;
+    }
+
+    .content{
+        padding:17px;
+    }
+
+    .g2,
+    .g3,
+    .g4{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .actions{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .action-group{
+        width:100%;
+    }
+
+    .action-group .btn{
+        flex:1;
+    }
+
+    .lesson{
+        grid-template-columns:58px 1fr;
+    }
+
+    .room{
+        display:none;
+    }
+
+    .att-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:480px){
+    .hero{
+        padding:22px;
+    }
+
+    .hero h1{
+        font-size:26px;
+    }
+
+    .card-body,
+    .card-head{
+        padding:16px;
+    }
+
+    .toast-box{
+        left:12px;
+        right:12px;
+        bottom:12px;
+    }
+
+    .toast{
+        min-width:0;
     }
 }
 </style>
@@ -410,1382 +1223,171 @@ th {
 
 <div class="app">
 
-<aside class="sidebar">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-    <div class="logo">🎓 Mijn School</div>
-
-    <div class="nav">
-
-        <button class="active" onclick="showPage('home', this)">
-            🏠 Home
-        </button>
-
-        <button onclick="showPage('rooster', this)">
-            📅 Rooster
-        </button>
-
-        <button onclick="showPage('cijfers', this)">
-            📊 Cijfers
-        </button>
-
-        <button onclick="showPage('vakken', this)">
-            📚 Vakken
-        </button>
-
-        <button onclick="showPage('taken', this)">
-            ✅ Huiswerk
-        </button>
-
-        <button onclick="showPage('agenda', this)">
-            🗓️ Agenda
-        </button>
-
-        <button onclick="showPage('aanwezigheid', this)">
-            🧑‍🏫 Aanwezigheid
-        </button>
-
-        <button onclick="showPage('lokalen', this)">
-            🏫 Lokalen
-        </button>
-
-        <button onclick="showPage('admin', this)">
-            🔐 Admin
-        </button>
-
+    <div class="logo">
+        <div class="logo-icon">🎓</div>
+        <div>
+            <div class="logo-title">SchoolFlow</div>
+            <div class="logo-sub">School dashboard</div>
+        </div>
     </div>
 
+    <div class="nav-title">Overzicht</div>
+
+    <nav class="nav">
+
+        <button class="nav-btn active" data-page="home">
+            <span class="nav-icon">🏠</span>
+            <span>Home</span>
+        </button>
+
+        <button class="nav-btn" data-page="rooster">
+            <span class="nav-icon">📅</span>
+            <span>Rooster</span>
+        </button>
+
+        <button class="nav-btn" data-page="cijfers">
+            <span class="nav-icon">📊</span>
+            <span>Cijfers</span>
+        </button>
+
+        <button class="nav-btn" data-page="vakken">
+            <span class="nav-icon">📚</span>
+            <span>Vakken</span>
+        </button>
+
+        <button class="nav-btn" data-page="huiswerk">
+            <span class="nav-icon">📝</span>
+            <span>Huiswerk</span>
+        </button>
+
+        <button class="nav-btn" data-page="agenda">
+            <span class="nav-icon">🗓️</span>
+            <span>Agenda</span>
+        </button>
+
+        <button class="nav-btn" data-page="lokalen">
+            <span class="nav-icon">🚪</span>
+            <span>Lokalen</span>
+        </button>
+
+        <button class="nav-btn" data-page="aanwezigheid">
+            <span class="nav-icon">✅</span>
+            <span>Aanwezigheid</span>
+        </button>
+
+        <div class="nav-title">Beheer</div>
+
+        <button class="nav-btn admin-nav" data-page="admin">
+            <span class="nav-icon">🔐</span>
+            <span>Admin panel</span>
+        </button>
+
+    </nav>
 </aside>
 
 
+<!-- MAIN -->
 <main class="main">
 
+<header class="topbar">
 
-<!-- HOME -->
+    <div class="top-left">
 
-<section id="home" class="page active">
+        <button class="mobile-menu" id="mobileMenu">
+            ☰
+        </button>
 
-    <h1 class="page-title">Goedemorgen 👋</h1>
-    <p class="subtitle" id="date"></p>
-
-    <div class="cards">
-
-        <div class="card">
-            <div class="card-title">📚 Vakken</div>
-            <div class="card-number" id="homeVakken">0</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">📊 Gemiddelde</div>
-            <div class="card-number" id="homeAverage">-</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">📝 Openstaand huiswerk</div>
-            <div class="card-number" id="homeTasks">0</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">📅 Lessen vandaag</div>
-            <div class="card-number" id="homeLessons">0</div>
+        <div>
+            <div class="top-title" id="pageTitle">Home</div>
+            <div class="top-subtitle">SchoolFlow dashboard</div>
         </div>
 
     </div>
 
-    <div class="section">
-        <div class="section-header">
-            <h3>📅 Vandaag</h3>
+    <div class="top-right">
+
+        <div class="date" id="todayDate"></div>
+
+        <div class="avatar">SF</div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- HOME -->
+<section class="page active" id="page-home">
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Welkom bij <span class="gradient">SchoolFlow</span> 👋</h1>
+            <p>
+                Alles voor school op één overzichtelijke plek.
+                Bekijk je rooster, cijfers, huiswerk, agenda en aanwezigheid.
+            </p>
         </div>
-        <div id="todayLessons"></div>
+    </div>
+
+    <div class="grid g4" id="homeStats"></div>
+
+    <br>
+
+    <div class="grid g2">
+
+        <div class="card">
+            <div class="card-head">
+                <div>
+                    <div class="card-title">📅 Eerstvolgende lessen</div>
+                    <div class="card-sub">Je rooster voor vandaag</div>
+                </div>
+            </div>
+
+            <div class="card-body" id="homeLessons"></div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-head">
+                <div>
+                    <div class="card-title">📝 Openstaand huiswerk</div>
+                    <div class="card-sub">Wat moet je nog doen?</div>
+                </div>
+            </div>
+
+            <div class="card-body" id="homeHomework"></div>
+        </div>
+
     </div>
 
 </section>
 
 
 <!-- ROOSTER -->
-
-<section id="rooster" class="page">
-
-    <h1 class="page-title">📅 Rooster</h1>
-    <p class="subtitle">Jouw lessen</p>
-
-    <div class="section">
-        <div id="schedule"></div>
-    </div>
-
-</section>
-
-
-<!-- CIJFERS -->
-
-<section id="cijfers" class="page">
-
-    <h1 class="page-title">📊 Cijfers</h1>
-    <p class="subtitle">Jouw resultaten</p>
-
-    <div class="cards">
-
-        <div class="card">
-            <div class="card-title">Gemiddelde</div>
-            <div class="card-number" id="average">-</div>
-        </div>
-
-    </div>
-
-    <div class="section">
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Vak</th>
-                    <th>Cijfer</th>
-                    <th>Weging</th>
-                </tr>
-            </thead>
-
-            <tbody id="gradesTable"></tbody>
-        </table>
-
-    </div>
-
-</section>
-
-
-<!-- VAKKEN -->
-
-<section id="vakken" class="page">
-
-    <h1 class="page-title">📚 Vakken</h1>
-    <p class="subtitle">Jouw vakken</p>
-
-    <div class="section">
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Vak</th>
-                    <th>Docent</th>
-                    <th>Lokaal</th>
-                </tr>
-            </thead>
-
-            <tbody id="subjectsTable"></tbody>
-        </table>
-
-    </div>
-
-</section>
-
-
-<!-- HUISWERK -->
-
-<section id="taken" class="page">
-
-    <h1 class="page-title">✅ Huiswerk</h1>
-    <p class="subtitle">Opdrachten en huiswerk</p>
-
-    <div class="section">
-
-        <div id="tasksList"></div>
-
-    </div>
-
-</section>
-
-
-<!-- AGENDA -->
-
-<section id="agenda" class="page">
-
-    <h1 class="page-title">🗓️ Agenda</h1>
-    <p class="subtitle">Toetsen en belangrijke gebeurtenissen</p>
-
-    <div class="section">
-
-        <div id="agendaList"></div>
-
-    </div>
-
-</section>
-
-
-<!-- AANWEZIGHEID -->
-
-<section id="aanwezigheid" class="page">
-
-    <h1 class="page-title">🧑‍🏫 Aanwezigheid</h1>
-    <p class="subtitle">Jouw aanwezigheid</p>
-
-    <div class="cards">
-
-        <div class="card">
-            <div class="card-title">Aanwezig</div>
-            <div class="card-number" id="presentCount">0</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Te laat</div>
-            <div class="card-number" id="lateCount">0</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Afwezig</div>
-            <div class="card-number" id="absentCount">0</div>
-        </div>
-
-    </div>
-
-    <div class="section">
-        <div id="attendanceList"></div>
-    </div>
-
-</section>
-
-
-<!-- LOKALEN -->
-
-<section id="lokalen" class="page">
-
-    <h1 class="page-title">🏫 Lokalen</h1>
-    <p class="subtitle">Lokalen van jouw lessen</p>
-
-    <div class="section">
-        <div id="roomsList"></div>
-    </div>
-
-</section>
-
-
-<!-- ADMIN -->
-
-<section id="admin" class="page">
-
-    <div id="adminLogin">
-
-        <div class="admin-lock">
-
-            <div class="lock-icon">🔐</div>
-
-            <h1 class="page-title">Adminpanel</h1>
-
-            <p class="subtitle">
-                Voer de beheerderscode in.
+<section class="page" id="page-rooster">
+
+    <div class="actions">
+        <div>
+            <h2>📅 Rooster</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Bekijk alle lessen.
             </p>
-
-            <div class="form-group">
-                <input
-                    id="adminCode"
-                    type="password"
-                    inputmode="numeric"
-                    placeholder="Code">
-            </div>
-
-            <button class="btn" onclick="loginAdmin()">
-                Inloggen
-            </button>
-
-            <p id="loginError"
-               style="color:#c73838;margin-top:12px">
-            </p>
-
         </div>
-
     </div>
 
-
-    <div id="adminPanel" class="hidden">
-
-        <div style="display:flex;justify-content:space-between;align-items:center">
-
+    <div class="card">
+        <div class="card-head">
             <div>
-                <h1 class="page-title">⚙️ Adminpanel</h1>
-                <p class="subtitle">
-                    Beheer klassen, rooster, cijfers, huiswerk en aanwezigheid.
-                </p>
+                <div class="card-title">Mijn rooster</div>
+                <div class="card-sub">Alle geplande lessen</div>
             </div>
 
-            <button class="btn btn-light" onclick="logoutAdmin()">
-                Uitloggen
-            </button>
-
-        </div>
-
-
-        <div class="admin-menu">
-
-            <div class="admin-card" onclick="adminSection('classes')">
-                <strong>🏫 Klassen</strong>
-                <span>Klassen maken en beheren</span>
-            </div>
-
-            <div class="admin-card" onclick="adminSection('schedule')">
-                <strong>📅 Rooster</strong>
-                <span>Lessen toevoegen</span>
-            </div>
-
-            <div class="admin-card" onclick="adminSection('grades')">
-                <strong>📊 Cijfers</strong>
-                <span>Cijfers beheren</span>
-            </div>
-
-            <div class="admin-card" onclick="adminSection('attendance')">
-                <strong>🧑‍🏫 Aanwezigheid</strong>
-                <span>Presentie registreren</span>
-            </div>
-
-            <div class="admin-card" onclick="adminSection('homework')">
-                <strong>📝 Huiswerk</strong>
-                <span>Opdrachten beheren</span>
-            </div>
-
-        </div>
-
-
-        <!-- ADMIN KLASSEN -->
-
-        <div id="adminClasses" class="section admin-part">
-
-            <div class="section-header">
-
-                <h3>🏫 Klassen</h3>
-
-                <button class="btn" onclick="openModal('class')">
-                    + Klas maken
-                </button>
-
-            </div>
-
-            <div id="classesList"></div>
-
-        </div>
-
-
-        <!-- ADMIN ROOSTER -->
-
-        <div id="adminSchedule" class="section admin-part hidden">
-
-            <div class="section-header">
-                <h3>📅 Rooster beheren</h3>
-
-                <button class="btn" onclick="openModal('lesson')">
-                    + Les toevoegen
-                </button>
-            </div>
-
-            <div id="adminScheduleList"></div>
-
-        </div>
-
-
-        <!-- ADMIN CIJFERS -->
-
-        <div id="adminGrades" class="section admin-part hidden">
-
-            <div class="section-header">
-                <h3>📊 Cijfers beheren</h3>
-
-                <button class="btn" onclick="openModal('grade')">
-                    + Cijfer
-                </button>
-            </div>
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Klas</th>
-                            <th>Leerling</th>
-                            <th>Vak</th>
-                            <th>Cijfer</th>
-                            <th>Weging</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="adminGradesTable"></tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-
-        <!-- ADMIN AANWEZIGHEID -->
-
-        <div id="adminAttendance" class="section admin-part hidden">
-
-            <div class="section-header">
-
-                <h3>🧑‍🏫 Aanwezigheid beheren</h3>
-
-                <button class="btn" onclick="openModal('attendance')">
-                    + Registreren
-                </button>
-
-            </div>
-
-            <div id="adminAttendanceList"></div>
-
-        </div>
-
-
-        <!-- ADMIN HUISWERK -->
-
-        <div id="adminHomework" class="section admin-part hidden">
-
-            <div class="section-header">
-
-                <h3>📝 Huiswerk beheren</h3>
-
-                <button class="btn" onclick="openModal('homework')">
-                    + Huiswerk
-                </button>
-
-            </div>
-
-            <div id="adminHomeworkList"></div>
-
-        </div>
-
-    </div>
-
-</section>
-
-</main>
-</div>
-
-
-<!-- MODAL -->
-
-<div class="modal" id="modal">
-
-    <div class="modal-box">
-
-        <h2 id="modalTitle">Toevoegen</h2>
-
-        <div id="modalContent"></div>
-
-    </div>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   ADMIN CODE
-===================================================== */
-
-const ADMIN_CODE = "5676";
-
-
-/* =====================================================
-   DATA
-===================================================== */
-
-let data = JSON.parse(
-    localStorage.getItem("schoolAppData")
-) || {
-
-    classes: [
-        {
-            id: 1,
-            name: "2A",
-            students: [
-                "Leerling 1",
-                "Leerling 2",
-                "Leerling 3"
-            ]
-        }
-    ],
-
-    subjects: [
-        {
-            name: "Wiskunde",
-            teacher: "Dhr. Jansen",
-            room: "B204"
-        },
-        {
-            name: "Nederlands",
-            teacher: "Mevr. De Vries",
-            room: "A103"
-        }
-    ],
-
-    lessons: [
-        {
-            day: "Maandag",
-            time: "08:30",
-            subject: "Wiskunde",
-            teacher: "Dhr. Jansen",
-            room: "B204",
-            className: "2A"
-        },
-        {
-            day: "Maandag",
-            time: "09:20",
-            subject: "Nederlands",
-            teacher: "Mevr. De Vries",
-            room: "A103",
-            className: "2A"
-        }
-    ],
-
-    grades: [
-        {
-            className: "2A",
-            student: "Leerling 1",
-            subject: "Wiskunde",
-            grade: 7.5,
-            weight: 2
-        }
-    ],
-
-    homework: [
-        {
-            className: "2A",
-            subject: "Wiskunde",
-            title: "Hoofdstuk 4 maken",
-            date: "2026-09-10",
-            notDone: false
-        }
-    ],
-
-    attendance: [
-        {
-            className: "2A",
-            student: "Leerling 1",
-            date: "2026-09-07",
-            subject: "Wiskunde",
-            status: "Aanwezig"
-        }
-    ],
-
-    events: []
-};
-
-
-function save() {
-
-    localStorage.setItem(
-        "schoolAppData",
-        JSON.stringify(data)
-    );
-
-}
-
-
-/* =====================================================
-   NAVIGATIE
-===================================================== */
-
-function showPage(page, button) {
-
-    document.querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
-
-    document.getElementById(page)
-        .classList.add("active");
-
-    document.querySelectorAll(".nav button")
-        .forEach(b => b.classList.remove("active"));
-
-    button.classList.add("active");
-
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADMIN LOGIN
-===================================================== */
-
-function loginAdmin() {
-
-    const code =
-        document.getElementById("adminCode").value;
-
-    if (code === ADMIN_CODE) {
-
-        document.getElementById("adminLogin")
-            .classList.add("hidden");
-
-        document.getElementById("adminPanel")
-            .classList.remove("hidden");
-
-        document.getElementById("loginError")
-            .textContent = "";
-
-        renderAdmin();
-
-    } else {
-
-        document.getElementById("loginError")
-            .textContent = "Onjuiste code.";
-
-    }
-
-}
-
-
-function logoutAdmin() {
-
-    document.getElementById("adminLogin")
-        .classList.remove("hidden");
-
-    document.getElementById("adminPanel")
-        .classList.add("hidden");
-
-    document.getElementById("adminCode").value = "";
-
-}
-
-
-/* =====================================================
-   ADMIN SECTIONS
-===================================================== */
-
-function adminSection(section) {
-
-    document.querySelectorAll(".admin-part")
-        .forEach(x => x.classList.add("hidden"));
-
-    const target = {
-        classes: "adminClasses",
-        schedule: "adminSchedule",
-        grades: "adminGrades",
-        attendance: "adminAttendance",
-        homework: "adminHomework"
-    }[section];
-
-    document.getElementById(target)
-        .classList.remove("hidden");
-
-}
-
-
-/* =====================================================
-   DATUM
-===================================================== */
-
-function updateDate() {
-
-    document.getElementById("date")
-        .textContent = new Date()
-        .toLocaleDateString("nl-NL", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
-
-}
-
-
-/* =====================================================
-   GEMIDDELDE
-===================================================== */
-
-function calculateAverage() {
-
-    if (!data.grades.length)
-        return "-";
-
-    let total = 0;
-    let weight = 0;
-
-    data.grades.forEach(g => {
-
-        total += Number(g.grade) * Number(g.weight);
-        weight += Number(g.weight);
-
-    });
-
-    return (total / weight).toFixed(2);
-
-}
-
-
-/* =====================================================
-   CIJFERS LEERLING
-===================================================== */
-
-function renderGrades() {
-
-    const table =
-        document.getElementById("gradesTable");
-
-    table.innerHTML = "";
-
-    data.grades.forEach(g => {
-
-        let cls = "grade-normal";
-
-        if (g.grade >= 7.5)
-            cls = "grade-good";
-
-        if (g.grade < 5.5)
-            cls = "grade-low";
-
-        table.innerHTML += `
-
-        <tr>
-            <td>${g.subject}</td>
-            <td class="${cls}">${g.grade}</td>
-            <td>${g.weight}</td>
-        </tr>
-
-        `;
-
-    });
-
-    document.getElementById("average")
-        .textContent = calculateAverage();
-
-    document.getElementById("homeAverage")
-        .textContent = calculateAverage();
-
-}
-
-
-/* =====================================================
-   VAKKEN
-===================================================== */
-
-function renderSubjects() {
-
-    const table =
-        document.getElementById("subjectsTable");
-
-    table.innerHTML = "";
-
-    data.subjects.forEach(s => {
-
-        table.innerHTML += `
-
-        <tr>
-            <td>${s.name}</td>
-            <td>${s.teacher}</td>
-            <td>${s.room}</td>
-        </tr>
-
-        `;
-
-    });
-
-    document.getElementById("homeVakken")
-        .textContent = data.subjects.length;
-
-}
-
-
-/* =====================================================
-   ROOSTER
-===================================================== */
-
-function renderSchedule() {
-
-    const container =
-        document.getElementById("schedule");
-
-    container.innerHTML = "";
-
-    const days = [
-        "Maandag",
-        "Dinsdag",
-        "Woensdag",
-        "Donderdag",
-        "Vrijdag"
-    ];
-
-    days.forEach(day => {
-
-        const lessons =
-            data.lessons
-            .filter(l => l.day === day)
-            .sort((a,b) =>
-                a.time.localeCompare(b.time)
-            );
-
-        let html = `
-            <div style="margin-bottom:25px">
-                <h3 style="margin-bottom:12px">${day}</h3>
-        `;
-
-        if (!lessons.length) {
-
-            html += `<p class="empty">Geen lessen</p>`;
-
-        }
-
-        lessons.forEach(l => {
-
-            html += `
-
-            <div class="lesson">
-
-                <div class="lesson-time">
-                    ${l.time}
-                </div>
-
-                <div class="lesson-info">
-
-                    <strong>${l.subject}</strong>
-
-                    <span>
-                        ${l.teacher}
-                        · Lokaal ${l.room}
-                        · Klas ${l.className}
-                    </span>
-
-                </div>
-
-            </div>
-
-            `;
-
-        });
-
-        html += "</div>";
-
-        container.innerHTML += html;
-
-    });
-
-}
-
-
-/* =====================================================
-   HUISWERK
-===================================================== */
-
-function renderHomework() {
-
-    const list =
-        document.getElementById("tasksList");
-
-    list.innerHTML = "";
-
-    data.homework.forEach(h => {
-
-        list.innerHTML += `
-
-        <div class="task">
-
-            <div style="flex:1">
-
-                <strong>
-                    ${h.title}
-                </strong>
-
-                <div style="color:#777;font-size:13px;margin-top:4px">
-                    ${h.subject}
-                    · ${h.date}
-                </div>
-
-            </div>
-
-            ${
-                h.notDone
-                ? `<span class="status status-absent">
-                    Niet gemaakt
-                   </span>`
-                : `<span class="status status-present">
-                    Klaar
-                   </span>`
-            }
-
-        </div>
-
-        `;
-
-    });
-
-    const open =
-        data.homework.filter(h => !h.notDone);
-
-    document.getElementById("homeTasks")
-        .textContent = open.length;
-
-}
-
-
-/* =====================================================
-   AANWEZIGHEID
-===================================================== */
-
-function renderAttendance() {
-
-    const list =
-        document.getElementById("attendanceList");
-
-    list.innerHTML = "";
-
-    let present = 0;
-    let late = 0;
-    let absent = 0;
-
-    data.attendance.forEach(a => {
-
-        if (a.status === "Aanwezig") present++;
-        if (a.status === "Te laat") late++;
-        if (a.status === "Afwezig") absent++;
-
-        let cls = "status-present";
-
-        if (a.status === "Te laat")
-            cls = "status-late";
-
-        if (a.status === "Afwezig")
-            cls = "status-absent";
-
-        if (a.status === "Geoorloofd afwezig")
-            cls = "status-excused";
-
-        list.innerHTML += `
-
-        <div class="attendance-row">
-
-            <div style="flex:1">
-
-                <strong>${a.date}</strong>
-
-                <div style="color:#777;font-size:13px">
-                    ${a.subject}
-                </div>
-
-            </div>
-
-            <span class="status ${cls}">
-                ${a.status}
-            </span>
-
-        </div>
-
-        `;
-
-    });
-
-    document.getElementById("presentCount")
-        .textContent = present;
-
-    document.getElementById("lateCount")
-        .textContent = late;
-
-    document.getElementById("absentCount")
-        .textContent = absent;
-
-}
-
-
-/* =====================================================
-   LOKALEN
-===================================================== */
-
-function renderRooms() {
-
-    const list =
-        document.getElementById("roomsList");
-
-    const rooms = [
-        ...new Set(
-            data.subjects.map(s => s.room)
-            .concat(data.lessons.map(l => l.room))
-        )
-    ];
-
-    list.innerHTML = rooms.length
-        ? rooms.map(r => `
-            <div class="task">
-                🏫 <strong>Lokaal ${r}</strong>
-            </div>
-        `).join("")
-        : `<p class="empty">Geen lokalen.</p>`;
-
-}
-
-
-/* =====================================================
-   ADMIN: KLASSEN
-===================================================== */
-
-function renderAdminClasses() {
-
-    const list =
-        document.getElementById("classesList");
-
-    list.innerHTML = "";
-
-    data.classes.forEach((c, index) => {
-
-        list.innerHTML += `
-
-        <div class="class-row">
-
-            <div style="flex:1">
-
-                <strong>Klas ${c.name}</strong>
-
-                <div style="color:#777;font-size:13px">
-                    ${c.students.length} leerling(en)
-                </div>
-
-            </div>
-
-            <button
-                class="btn btn-small btn-danger"
-                onclick="deleteClass(${index})">
-                Verwijder
-            </button>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
-
-function deleteClass(index) {
-
-    if (!confirm(
-        "Weet je zeker dat je deze klas wilt verwijderen?"
-    )) return;
-
-    data.classes.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADMIN: ROOSTER
-===================================================== */
-
-function renderAdminSchedule() {
-
-    const list =
-        document.getElementById("adminScheduleList");
-
-    list.innerHTML = "";
-
-    data.lessons.forEach((l, index) => {
-
-        list.innerHTML += `
-
-        <div class="lesson">
-
-            <div class="lesson-time">
-                ${l.time}
-            </div>
-
-            <div class="lesson-info">
-
-                <strong>
-                    ${l.day} · ${l.subject}
-                </strong>
-
-                <span>
-                    Klas ${l.className}
-                    · ${l.teacher}
-                    · lokaal ${l.room}
-                </span>
-
-            </div>
-
-            <button
-                class="btn btn-small btn-danger"
-                onclick="deleteLesson(${index})">
-                ×
-            </button>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
-
-function deleteLesson(index) {
-
-    data.lessons.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADMIN: CIJFERS
-===================================================== */
-
-function renderAdminGrades() {
-
-    const table =
-        document.getElementById("adminGradesTable");
-
-    table.innerHTML = "";
-
-    data.grades.forEach((g, index) => {
-
-        table.innerHTML += `
-
-        <tr>
-
-            <td>${g.className}</td>
-            <td>${g.student}</td>
-            <td>${g.subject}</td>
-            <td>${g.grade}</td>
-            <td>${g.weight}</td>
-
-            <td>
-
-                <button
-                    class="btn btn-small btn-danger"
-                    onclick="deleteGrade(${index})">
-                    Verwijder
-                </button>
-
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-function deleteGrade(index) {
-
-    data.grades.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADMIN: AANWEZIGHEID
-===================================================== */
-
-function renderAdminAttendance() {
-
-    const list =
-        document.getElementById("adminAttendanceList");
-
-    list.innerHTML = "";
-
-    data.attendance.forEach((a, index) => {
-
-        let cls = "status-present";
-
-        if (a.status === "Te laat")
-            cls = "status-late";
-
-        if (a.status === "Afwezig")
-            cls = "status-absent";
-
-        if (a.status === "Geoorloofd afwezig")
-            cls = "status-excused";
-
-        list.innerHTML += `
-
-        <div class="attendance-row">
-
-            <div style="flex:1">
-
-                <strong>
-                    ${a.student}
-                </strong>
-
-                <div style="color:#777;font-size:13px">
-                    Klas ${a.className}
-                    · ${a.subject}
-                    · ${a.date}
-                </div>
-
-            </div>
-
-            <span class="status ${cls}">
-                ${a.status}
-            </span>
-
-            <button
-                class="btn btn-small btn-danger"
-                onclick="deleteAttendance(${index})">
-                ×
-            </button>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
-
-function deleteAttendance(index) {
-
-    data.attendance.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADMIN: HUISWERK
-===================================================== */
-
-function renderAdminHomework() {
-
-    const list =
-        document.getElementById("adminHomeworkList");
-
-    list.innerHTML = "";
-
-    data.homework.forEach((h, index) => {
-
-        list.innerHTML += `
-
-        <div class="task">
-
-            <div style="flex:1">
-
-                <strong>${h.title}</strong>
-
-                <div style="color:#777;font-size:13px">
-                    Klas ${h.className}
-                    · ${h.subject}
-                    · ${h.date}
-                </div>
-
-            </div>
-
-            ${
-                h.notDone
-                ? `<span class="status status-absent">
-                    Niet gemaakt
-                   </span>`
-                : `<span class="status status-present">
-                    Klaar
-                   </span>`
-            }
-
-            <button
-                class="btn btn-small btn-danger"
-                onclick="deleteHomework(${index})">
-                ×
-            </button>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
-
-function deleteHomework(index) {
-
-    data.homework.splice(index, 1);
-
-    save();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   MODAL
-===================================================== */
-
-function openModal(type) {
-
-    const modal =
-        document.getElementById("modal");
-
-    const title =
-        document.getElementById("modalTitle");
-
-    const content =
-        document.getElementById("modalContent");
-
-    modal.classList.add("show");
-
-
-    /* KLAS */
-
-    if (type === "class") {
-
-        title.textContent = "Nieuwe klas";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Klasnaam</label>
-            <input id="className"
-                   placeholder="Bijv. 3B">
-        </div>
-
-        <div class="form-group">
-            <label>Leerlingen</label>
-            <textarea id="classStudents"
-                      placeholder="Eén leerling per regel"></textarea>
-        </div>
-
-        <div class="modal-buttons">
-
-            <button class="btn btn-light"
-                    onclick="closeModal()">
-                Annuleren
-            </button>
-
-            <button class="btn"
-                    onclick="addClass()">
-                Klas maken
-            </button>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* LES */
-
-    if (type === "lesson") {
-
-        title.textContent = "Nieuwe les";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Klas</label>
-            <select id="lessonClass">
-                ${classOptions()}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Dag</label>
-            <select id="lessonDay">
+            <select id="scheduleDay" style="width:140px">
                 <option>Maandag</option>
                 <option>Dinsdag</option>
                 <option>Woensdag</option>
@@ -1794,639 +1396,3325 @@ function openModal(type) {
             </select>
         </div>
 
-        <div class="form-group">
-            <label>Tijd</label>
-            <input id="lessonTime" type="time">
+        <div class="card-body" id="scheduleList"></div>
+    </div>
+
+</section>
+
+
+<!-- CIJFERS -->
+<section class="page" id="page-cijfers">
+
+    <div class="actions">
+        <div>
+            <h2>📊 Cijfers</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Bekijk je resultaten.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid g4" id="gradeStats"></div>
+
+    <br>
+
+    <div class="card">
+
+        <div class="card-head">
+            <div>
+                <div class="card-title">Alle cijfers</div>
+                <div class="card-sub">Je resultaten per vak</div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Vak</label>
-            <input id="lessonSubject"
-                   placeholder="Bijv. Wiskunde">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vak</th>
+                        <th>Toets</th>
+                        <th>Cijfer</th>
+                        <th>Datum</th>
+                    </tr>
+                </thead>
+
+                <tbody id="gradesTable"></tbody>
+            </table>
         </div>
 
-        <div class="form-group">
-            <label>Docent</label>
-            <input id="lessonTeacher"
-                   placeholder="Bijv. Dhr. Jansen">
+    </div>
+
+</section>
+
+
+<!-- VAKKEN -->
+<section class="page" id="page-vakken">
+
+    <div class="actions">
+        <div>
+            <h2>📚 Vakken</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Je huidige vakken.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid g3" id="subjectsGrid"></div>
+
+</section>
+
+
+<!-- HUISWERK -->
+<section class="page" id="page-huiswerk">
+
+    <div class="actions">
+        <div>
+            <h2>📝 Huiswerk</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Houd je taken bij.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid g2" id="homeworkGrid"></div>
+
+</section>
+
+
+<!-- AGENDA -->
+<section class="page" id="page-agenda">
+
+    <div class="actions">
+        <div>
+            <h2>🗓️ Agenda</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Belangrijke gebeurtenissen.
+            </p>
+        </div>
+    </div>
+
+    <div class="card">
+
+        <div class="card-head">
+            <div>
+                <div class="card-title">Agenda</div>
+                <div class="card-sub">Toetsen, activiteiten en afspraken</div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Lokaal</label>
-            <input id="lessonRoom"
-                   placeholder="Bijv. B204">
+        <div class="card-body" id="agendaList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- LOKALEN -->
+<section class="page" id="page-lokalen">
+
+    <div class="actions">
+        <div>
+            <h2>🚪 Lokalen</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Overzicht van lokalen.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid g3" id="roomsGrid"></div>
+
+</section>
+
+
+<!-- AANWEZIGHEID -->
+<section class="page" id="page-aanwezigheid">
+
+    <div class="actions">
+        <div>
+            <h2>✅ Aanwezigheid</h2>
+            <p style="color:var(--muted);font-size:10px;margin-top:4px">
+                Je aanwezigheidsoverzicht.
+            </p>
+        </div>
+    </div>
+
+    <div class="att-grid" id="attendanceStats"></div>
+
+    <br>
+
+    <div class="card">
+
+        <div class="card-head">
+            <div>
+                <div class="card-title">Aanwezigheidsregistratie</div>
+                <div class="card-sub">Overzicht per les</div>
+            </div>
         </div>
 
-        <div class="modal-buttons">
+        <div class="table-wrap">
 
-            <button class="btn btn-light"
-                    onclick="closeModal()">
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Vak</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="attendanceTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ADMIN -->
+<section class="page" id="page-admin">
+
+    <!-- LOGIN -->
+    <div id="adminLogin">
+
+        <div class="login">
+
+            <div class="login-icon">🔐</div>
+
+            <h2>Admin panel</h2>
+
+            <p>
+                Voer de beheerderscode in om verder te gaan.
+            </p>
+
+            <div class="form-group">
+                <input
+                    type="password"
+                    id="adminCode"
+                    placeholder="Admin code"
+                    autocomplete="off"
+                >
+            </div>
+
+            <button class="btn primary" id="loginAdmin">
+                🔓 Inloggen
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ADMIN CONTENT -->
+    <div id="adminContent" style="display:none">
+
+        <div class="admin-hero">
+
+            <div class="admin-status">
+                Admin ingelogd
+            </div>
+
+            <h2>⚙️ Beheercentrum</h2>
+
+            <p>
+                Beheer hier klassen, leerlingen, rooster, cijfers,
+                huiswerk en aanwezigheid.
+            </p>
+
+            <button
+                class="btn danger small"
+                style="margin-top:15px"
+                id="logoutAdmin"
+            >
+                Uitloggen
+            </button>
+
+        </div>
+
+
+        <div class="admin-tabs">
+
+            <button class="admin-tab active" data-admin="dashboard">
+                📊 Overzicht
+            </button>
+
+            <button class="admin-tab" data-admin="classes">
+                🏫 Klassen
+            </button>
+
+            <button class="admin-tab" data-admin="students">
+                👨‍🎓 Leerlingen
+            </button>
+
+            <button class="admin-tab" data-admin="schedule">
+                📅 Rooster
+            </button>
+
+            <button class="admin-tab" data-admin="grades">
+                📊 Cijfers
+            </button>
+
+            <button class="admin-tab" data-admin="homework">
+                📝 Huiswerk
+            </button>
+
+            <button class="admin-tab" data-admin="attendance">
+                ✅ Aanwezigheid
+            </button>
+
+            <button class="admin-tab" data-admin="rooms">
+                🚪 Lokalen
+            </button>
+
+            <button class="admin-tab" data-admin="subjects">
+                📚 Vakken
+            </button>
+
+        </div>
+
+
+        <!-- ADMIN DASHBOARD -->
+
+        <div class="admin-page active" id="admin-dashboard">
+
+            <div class="grid g4" id="adminStats"></div>
+
+            <br>
+
+            <div class="grid g2">
+
+                <div class="card">
+
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">🏫 Huidige klas</div>
+                            <div class="card-sub">Actieve klas</div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+
+                        <select id="adminClassSelect"></select>
+
+                        <div style="margin-top:15px;color:var(--muted);font-size:10px">
+                            De gekozen klas wordt gebruikt bij het
+                            toevoegen van leerlingen, lessen en cijfers.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">💾 Gegevens</div>
+                            <div class="card-sub">Lokale opslag</div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+
+                        <button
+                            class="btn warning"
+                            id="resetData"
+                        >
+                            🔄 Demo-data herstellen
+                        </button>
+
+                        <p style="color:var(--muted);font-size:9px;margin-top:10px">
+                            Hiermee worden alle lokale wijzigingen
+                            verwijderd en de voorbeeldgegevens teruggezet.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CLASSES -->
+
+        <div class="admin-page" id="admin-classes" style="display:none">
+
+            <div class="actions">
+
+                <h2>🏫 Klassen beheren</h2>
+
+                <button class="btn primary" id="addClass">
+                    ＋ Nieuwe klas
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-body" id="classAdminList"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENTS -->
+
+        <div class="admin-page" id="admin-students" style="display:none">
+
+            <div class="actions">
+
+                <h2>👨‍🎓 Leerlingen</h2>
+
+                <button class="btn primary" id="addStudent">
+                    ＋ Leerling toevoegen
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>Klas</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentsAdminTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SCHEDULE -->
+
+        <div class="admin-page" id="admin-schedule" style="display:none">
+
+            <div class="actions">
+
+                <h2>📅 Rooster beheren</h2>
+
+                <button class="btn primary" id="addLesson">
+                    ＋ Les toevoegen
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Dag</th>
+                                <th>Tijd</th>
+                                <th>Vak</th>
+                                <th>Leraar</th>
+                                <th>Lokaal</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="scheduleAdminTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GRADES -->
+
+        <div class="admin-page" id="admin-grades" style="display:none">
+
+            <div class="actions">
+
+                <h2>📊 Cijfers beheren</h2>
+
+                <button class="btn primary" id="addGrade">
+                    ＋ Cijfer toevoegen
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Leerling</th>
+                                <th>Vak</th>
+                                <th>Toets</th>
+                                <th>Cijfer</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="gradesAdminTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HOMEWORK -->
+
+        <div class="admin-page" id="admin-homework" style="display:none">
+
+            <div class="actions">
+
+                <h2>📝 Huiswerk beheren</h2>
+
+                <button class="btn primary" id="addHomework">
+                    ＋ Huiswerk toevoegen
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Vak</th>
+                                <th>Taak</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="homeworkAdminTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ATTENDANCE -->
+
+        <div class="admin-page" id="admin-attendance" style="display:none">
+
+            <div class="actions">
+
+                <h2>✅ Aanwezigheid beheren</h2>
+
+                <button class="btn primary" id="addAttendance">
+                    ＋ Registratie toevoegen
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Leerling</th>
+                                <th>Vak</th>
+                                <th>Datum</th>
+                                <th>Status</th>
+                                <th>Actie</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="attendanceAdminTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROOMS -->
+
+        <div class="admin-page" id="admin-rooms" style="display:none">
+
+            <div class="actions">
+
+                <h2>🚪 Lokalen beheren</h2>
+
+                <button class="btn primary" id="addRoom">
+                    ＋ Lokaal toevoegen
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-body" id="roomsAdminList"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUBJECTS -->
+
+        <div class="admin-page" id="admin-subjects" style="display:none">
+
+            <div class="actions">
+
+                <h2>📚 Vakken beheren</h2>
+
+                <button class="btn primary" id="addSubject">
+                    ＋ Vak toevoegen
+                </button>
+
+            </div>
+
+            <div class="grid g3" id="subjectsAdminGrid"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+</main>
+</div>
+
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h2 id="modalTitle">Toevoegen</h2>
+
+            <button class="close" id="modalClose">×</button>
+
+        </div>
+
+        <div class="modal-body" id="modalBody"></div>
+
+        <div class="modal-foot">
+
+            <button class="btn" id="modalCancel">
                 Annuleren
             </button>
 
-            <button class="btn"
-                    onclick="addLesson()">
-                Toevoegen
-            </button>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* CIJFER */
-
-    if (type === "grade") {
-
-        title.textContent = "Nieuw cijfer";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Klas</label>
-            <select id="gradeClass"
-                    onchange="updateStudentOptions()">
-                ${classOptions()}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Leerling</label>
-            <select id="gradeStudent">
-                ${studentOptions()}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Vak</label>
-            <input id="gradeSubject"
-                   placeholder="Bijv. Wiskunde">
-        </div>
-
-        <div class="form-group">
-            <label>Cijfer</label>
-            <input id="gradeValue"
-                   type="number"
-                   min="1"
-                   max="10"
-                   step="0.1">
-        </div>
-
-        <div class="form-group">
-            <label>Weging</label>
-            <input id="gradeWeight"
-                   type="number"
-                   min="1"
-                   value="1">
-        </div>
-
-        <div class="modal-buttons">
-
-            <button class="btn btn-light"
-                    onclick="closeModal()">
-                Annuleren
-            </button>
-
-            <button class="btn"
-                    onclick="addGrade()">
+            <button class="btn primary" id="modalSave">
                 Opslaan
             </button>
 
         </div>
 
-        `;
+    </div>
 
+</div>
+
+
+<!-- TOASTS -->
+<div class="toast-box" id="toastBox"></div>
+
+
+<script>
+
+/* =========================================================
+   SCHOOLFLOW APP
+   ========================================================= */
+
+const ADMIN_CODE = "5676";
+const STORAGE_KEY = "schoolflow_data_v3";
+
+
+/* =========================================================
+   DEFAULT DATA
+   ========================================================= */
+
+const defaultData = {
+
+    currentClass:"2A",
+
+    classes:[
+        {
+            id:"class_2a",
+            name:"2A"
+        },
+        {
+            id:"class_2b",
+            name:"2B"
+        }
+    ],
+
+    students:[
+        {
+            id:"student_1",
+            name:"Alex",
+            class:"2A"
+        },
+        {
+            id:"student_2",
+            name:"Sam",
+            class:"2A"
+        },
+        {
+            id:"student_3",
+            name:"Jamie",
+            class:"2A"
+        },
+        {
+            id:"student_4",
+            name:"Noah",
+            class:"2B"
+        }
+    ],
+
+    subjects:[
+        {
+            id:"sub_1",
+            name:"Wiskunde",
+            teacher:"Dhr. Janssen",
+            icon:"📐"
+        },
+        {
+            id:"sub_2",
+            name:"Nederlands",
+            teacher:"Mevr. De Vries",
+            icon:"📖"
+        },
+        {
+            id:"sub_3",
+            name:"Engels",
+            teacher:"Dhr. Smith",
+            icon:"🇬🇧"
+        },
+        {
+            id:"sub_4",
+            name:"Geschiedenis",
+            teacher:"Mevr. Bakker",
+            icon:"🏛️"
+        },
+        {
+            id:"sub_5",
+            name:"Biologie",
+            teacher:"Dhr. Peters",
+            icon:"🧬"
+        },
+        {
+            id:"sub_6",
+            name:"Natuurkunde",
+            teacher:"Mevr. Smit",
+            icon:"⚡"
+        }
+    ],
+
+    rooms:[
+        {
+            id:"room_1",
+            name:"B201",
+            building:"Hoofdgebouw",
+            floor:"2"
+        },
+        {
+            id:"room_2",
+            name:"A104",
+            building:"Hoofdgebouw",
+            floor:"1"
+        },
+        {
+            id:"room_3",
+            name:"C301",
+            building:"Science gebouw",
+            floor:"3"
+        },
+        {
+            id:"room_4",
+            name:"Gymzaal",
+            building:"Sportgebouw",
+            floor:"0"
+        }
+    ],
+
+    schedule:[
+        {
+            id:"lesson_1",
+            class:"2A",
+            day:"Maandag",
+            start:"08:30",
+            end:"09:20",
+            subject:"Wiskunde",
+            teacher:"Dhr. Janssen",
+            room:"B201"
+        },
+        {
+            id:"lesson_2",
+            class:"2A",
+            day:"Maandag",
+            start:"09:20",
+            end:"10:10",
+            subject:"Nederlands",
+            teacher:"Mevr. De Vries",
+            room:"A104"
+        },
+        {
+            id:"lesson_3",
+            class:"2A",
+            day:"Maandag",
+            start:"10:30",
+            end:"11:20",
+            subject:"Engels",
+            teacher:"Dhr. Smith",
+            room:"B201"
+        },
+        {
+            id:"lesson_4",
+            class:"2A",
+            day:"Dinsdag",
+            start:"08:30",
+            end:"09:20",
+            subject:"Biologie",
+            teacher:"Dhr. Peters",
+            room:"C301"
+        },
+        {
+            id:"lesson_5",
+            class:"2A",
+            day:"Dinsdag",
+            start:"09:20",
+            end:"10:10",
+            subject:"Geschiedenis",
+            teacher:"Mevr. Bakker",
+            room:"A104"
+        },
+        {
+            id:"lesson_6",
+            class:"2A",
+            day:"Woensdag",
+            start:"10:30",
+            end:"11:20",
+            subject:"Natuurkunde",
+            teacher:"Mevr. Smit",
+            room:"C301"
+        }
+    ],
+
+    grades:[
+        {
+            id:"grade_1",
+            student:"Alex",
+            class:"2A",
+            subject:"Wiskunde",
+            test:"Hoofdstuk 4",
+            grade:8.2,
+            date:"2026-09-02"
+        },
+        {
+            id:"grade_2",
+            student:"Alex",
+            class:"2A",
+            subject:"Engels",
+            test:"Vocabulary",
+            grade:7.5,
+            date:"2026-09-04"
+        },
+        {
+            id:"grade_3",
+            student:"Sam",
+            class:"2A",
+            subject:"Nederlands",
+            test:"Lezen",
+            grade:6.8,
+            date:"2026-09-03"
+        },
+        {
+            id:"grade_4",
+            student:"Jamie",
+            class:"2A",
+            subject:"Biologie",
+            test:"Cellen",
+            grade:9.1,
+            date:"2026-09-05"
+        }
+    ],
+
+    homework:[
+        {
+            id:"hw_1",
+            class:"2A",
+            subject:"Wiskunde",
+            title:"Opgaven 4.1 t/m 4.4",
+            deadline:"2026-09-08",
+            notDone:false
+        },
+        {
+            id:"hw_2",
+            class:"2A",
+            subject:"Engels",
+            title:"Learn vocabulary unit 3",
+            deadline:"2026-09-09",
+            notDone:true
+        },
+        {
+            id:"hw_3",
+            class:"2A",
+            subject:"Geschiedenis",
+            title:"Samenvatting hoofdstuk 2",
+            deadline:"2026-09-10",
+            notDone:false
+        }
+    ],
+
+    attendance:[
+        {
+            id:"att_1",
+            student:"Alex",
+            class:"2A",
+            subject:"Wiskunde",
+            date:"2026-09-01",
+            status:"Aanwezig"
+        },
+        {
+            id:"att_2",
+            student:"Alex",
+            class:"2A",
+            subject:"Engels",
+            date:"2026-09-02",
+            status:"Te laat"
+        },
+        {
+            id:"att_3",
+            student:"Alex",
+            class:"2A",
+            subject:"Nederlands",
+            date:"2026-09-03",
+            status:"Aanwezig"
+        },
+        {
+            id:"att_4",
+            student:"Alex",
+            class:"2A",
+            subject:"Biologie",
+            date:"2026-09-04",
+            status:"Afwezig"
+        }
+    ],
+
+    agenda:[
+        {
+            id:"event_1",
+            date:"2026-09-08",
+            title:"Wiskunde toets",
+            type:"Toets"
+        },
+        {
+            id:"event_2",
+            date:"2026-09-10",
+            title:"Project inleveren",
+            type:"Deadline"
+        },
+        {
+            id:"event_3",
+            date:"2026-09-15",
+            title:"Ouderavond",
+            type:"Evenement"
+        }
+    ]
+};
+
+
+/* =========================================================
+   LOAD / SAVE
+   ========================================================= */
+
+let data = loadData();
+
+function clone(obj){
+    return JSON.parse(JSON.stringify(obj));
+}
+
+function loadData(){
+
+    try{
+
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if(saved){
+
+            const parsed = JSON.parse(saved);
+
+            return {
+                ...clone(defaultData),
+                ...parsed
+            };
+        }
+
+    }catch(error){
+        console.error(error);
     }
 
+    return clone(defaultData);
+}
 
-    /* AANWEZIGHEID */
+function saveData(){
 
-    if (type === "attendance") {
-
-        title.textContent = "Aanwezigheid registreren";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Klas</label>
-
-            <select id="attendanceClass"
-                    onchange="updateAttendanceStudents()">
-                ${classOptions()}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Leerling</label>
-
-            <select id="attendanceStudent">
-                ${studentOptions()}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Datum</label>
-
-            <input id="attendanceDate"
-                   type="date"
-                   value="${new Date().toISOString().slice(0,10)}">
-        </div>
-
-        <div class="form-group">
-            <label>Vak</label>
-
-            <input id="attendanceSubject"
-                   placeholder="Bijv. Wiskunde">
-        </div>
-
-        <div class="form-group">
-            <label>Status</label>
-
-            <select id="attendanceStatus">
-
-                <option>Aanwezig</option>
-                <option>Te laat</option>
-                <option>Afwezig</option>
-                <option>Geoorloofd afwezig</option>
-
-            </select>
-
-        </div>
-
-        <div class="modal-buttons">
-
-            <button class="btn btn-light"
-                    onclick="closeModal()">
-                Annuleren
-            </button>
-
-            <button class="btn"
-                    onclick="addAttendance()">
-                Opslaan
-            </button>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* HUISWERK */
-
-    if (type === "homework") {
-
-        title.textContent = "Nieuw huiswerk";
-
-        content.innerHTML = `
-
-        <div class="form-group">
-            <label>Klas</label>
-            <select id="homeworkClass">
-                ${classOptions()}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Vak</label>
-            <input id="homeworkSubject"
-                   placeholder="Bijv. Nederlands">
-        </div>
-
-        <div class="form-group">
-            <label>Opdracht</label>
-            <input id="homeworkTitle"
-                   placeholder="Bijv. Hoofdstuk 5 maken">
-        </div>
-
-        <div class="form-group">
-            <label>Inleverdatum</label>
-            <input id="homeworkDate"
-                   type="date">
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                <input id="homeworkNotDone"
-                       type="checkbox">
-                Markeer als niet gemaakt
-            </label>
-
-        </div>
-
-        <div class="modal-buttons">
-
-            <button class="btn btn-light"
-                    onclick="closeModal()">
-                Annuleren
-            </button>
-
-            <button class="btn"
-                    onclick="addHomework()">
-                Opslaan
-            </button>
-
-        </div>
-
-        `;
-
-    }
-
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
 }
 
 
-function closeModal() {
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
-    document.getElementById("modal")
-        .classList.remove("show");
+function id(prefix="id"){
+    return prefix + "_" + Date.now() + "_" +
+        Math.random().toString(36).slice(2,7);
+}
 
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function formatDate(date){
+
+    if(!date) return "-";
+
+    return new Date(date + "T00:00:00")
+        .toLocaleDateString("nl-NL",{
+            day:"numeric",
+            month:"short",
+            year:"numeric"
+        });
+}
+
+function toast(message,type="ok"){
+
+    const box = document.getElementById("toastBox");
+
+    const el = document.createElement("div");
+
+    el.className = "toast " + type;
+
+    el.textContent = message;
+
+    box.appendChild(el);
+
+    setTimeout(()=>{
+        el.remove();
+    },3000);
+}
+
+function statusBadge(status){
+
+    let cls = "b-purple";
+
+    if(status === "Aanwezig")
+        cls = "b-green";
+
+    if(status === "Te laat")
+        cls = "b-yellow";
+
+    if(status === "Afwezig")
+        cls = "b-red";
+
+    if(status === "Geoorloofd afwezig")
+        cls = "b-blue";
+
+    return `<span class="badge ${cls}">${escapeHTML(status)}</span>`;
+}
+
+function getClassStudents(){
+
+    return data.students.filter(
+        s => s.class === data.currentClass
+    );
+}
+
+function currentGrades(){
+
+    return data.grades.filter(
+        g => g.class === data.currentClass
+    );
 }
 
 
-/* =====================================================
-   SELECT OPTIONS
-===================================================== */
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
-function classOptions() {
+const pageNames = {
+    home:"Home",
+    rooster:"Rooster",
+    cijfers:"Cijfers",
+    vakken:"Vakken",
+    huiswerk:"Huiswerk",
+    agenda:"Agenda",
+    lokalen:"Lokalen",
+    aanwezigheid:"Aanwezigheid",
+    admin:"Admin panel"
+};
 
-    if (!data.classes.length)
-        return `<option value="">Geen klassen</option>`;
+document.querySelectorAll(".nav-btn").forEach(btn=>{
 
-    return data.classes.map(c =>
-        `<option value="${c.name}">
-            ${c.name}
-        </option>`
-    ).join("");
+    btn.addEventListener("click",()=>{
 
-}
+        const page = btn.dataset.page;
 
+        document.querySelectorAll(".nav-btn")
+            .forEach(x=>x.classList.remove("active"));
 
-function studentOptions() {
+        btn.classList.add("active");
 
-    if (!data.classes.length)
-        return `<option value="">Geen leerlingen</option>`;
+        document.querySelectorAll(".page")
+            .forEach(x=>x.classList.remove("active"));
 
-    const students =
-        data.classes[0].students;
+        document
+            .getElementById("page-"+page)
+            .classList.add("active");
 
-    return students.map(s =>
-        `<option value="${s}">
-            ${s}
-        </option>`
-    ).join("");
+        document.getElementById("pageTitle").textContent =
+            pageNames[page];
 
-}
+        document
+            .getElementById("sidebar")
+            .classList.remove("open");
 
+        renderAll();
 
-function updateStudentOptions() {
+        if(page === "admin"){
 
-    const className =
-        document.getElementById("gradeClass").value;
-
-    const c =
-        data.classes.find(x => x.name === className);
-
-    const select =
-        document.getElementById("gradeStudent");
-
-    select.innerHTML =
-        c
-        ? c.students.map(s =>
-            `<option value="${s}">
-                ${s}
-            </option>`
-          ).join("")
-        : "";
-
-}
+            if(adminLoggedIn){
+                showAdminContent();
+            }else{
+                showAdminLogin();
+            }
+        }
+    });
+});
 
 
-function updateAttendanceStudents() {
+/* MOBILE MENU */
 
-    const className =
-        document.getElementById("attendanceClass").value;
+document.getElementById("mobileMenu")
+    .addEventListener("click",()=>{
 
-    const c =
-        data.classes.find(x => x.name === className);
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
 
-    const select =
-        document.getElementById("attendanceStudent");
-
-    select.innerHTML =
-        c
-        ? c.students.map(s =>
-            `<option value="${s}">
-                ${s}
-            </option>`
-          ).join("")
-        : "";
-
-}
-
-
-/* =====================================================
-   ADD KLAS
-===================================================== */
-
-function addClass() {
-
-    const name =
-        document.getElementById("className").value.trim();
-
-    const students =
-        document.getElementById("classStudents")
-        .value
-        .split("\n")
-        .map(x => x.trim())
-        .filter(Boolean);
-
-    if (!name)
-        return alert("Vul een klasnaam in.");
-
-    if (data.classes.some(c => c.name === name))
-        return alert("Deze klas bestaat al.");
-
-    data.classes.push({
-        id: Date.now(),
-        name,
-        students
     });
 
-    save();
-    closeModal();
-    renderAll();
 
-}
+/* =========================================================
+   DATE
+   ========================================================= */
 
-
-/* =====================================================
-   ADD LES
-===================================================== */
-
-function addLesson() {
-
-    const lesson = {
-
-        className:
-            document.getElementById("lessonClass").value,
-
-        day:
-            document.getElementById("lessonDay").value,
-
-        time:
-            document.getElementById("lessonTime").value,
-
-        subject:
-            document.getElementById("lessonSubject").value,
-
-        teacher:
-            document.getElementById("lessonTeacher").value,
-
-        room:
-            document.getElementById("lessonRoom").value
-
-    };
-
-    if (!lesson.time || !lesson.subject)
-        return alert("Vul minimaal tijd en vak in.");
-
-    data.lessons.push(lesson);
-
-    save();
-    closeModal();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADD CIJFER
-===================================================== */
-
-function addGrade() {
-
-    const grade = Number(
-        document.getElementById("gradeValue").value
+document.getElementById("todayDate").textContent =
+    new Date().toLocaleDateString(
+        "nl-NL",
+        {
+            weekday:"long",
+            day:"numeric",
+            month:"long"
+        }
     );
 
-    if (!grade || grade < 1 || grade > 10)
-        return alert("Vul een geldig cijfer tussen 1 en 10 in.");
 
-    data.grades.push({
+/* =========================================================
+   HOME
+   ========================================================= */
 
-        className:
-            document.getElementById("gradeClass").value,
+function renderHome(){
 
-        student:
-            document.getElementById("gradeStudent").value,
+    const grades = currentGrades();
 
-        subject:
-            document.getElementById("gradeSubject").value,
+    const avg = grades.length
+        ? (
+            grades.reduce((sum,g)=>sum+Number(g.grade),0)
+            / grades.length
+          ).toFixed(1)
+        : "-";
 
-        grade,
+    const homework = data.homework.filter(
+        h => h.class === data.currentClass
+    );
 
-        weight:
-            Number(
-                document.getElementById("gradeWeight").value
-            ) || 1
+    const unfinished = homework.filter(
+        h => h.notDone
+    ).length;
 
-    });
+    document.getElementById("homeStats").innerHTML = `
 
-    save();
-    closeModal();
-    renderAll();
+        <div class="stat">
+            <div class="stat-icon">📚</div>
+            <div class="stat-label">Vakken</div>
+            <div class="stat-number">${data.subjects.length}</div>
+        </div>
 
+        <div class="stat green">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-label">Gemiddelde</div>
+            <div class="stat-number">${avg}</div>
+        </div>
+
+        <div class="stat yellow">
+            <div class="stat-icon">📝</div>
+            <div class="stat-label">Huiswerk</div>
+            <div class="stat-number">${homework.length}</div>
+        </div>
+
+        <div class="stat red">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-label">Niet af</div>
+            <div class="stat-number">${unfinished}</div>
+        </div>
+    `;
+
+
+    const lessons = data.schedule
+        .filter(x=>x.class===data.currentClass)
+        .slice(0,5);
+
+    document.getElementById("homeLessons").innerHTML =
+        lessons.length
+        ? lessons.map(lessonHTML).join("")
+        : emptyHTML("📅","Geen lessen","Er staan geen lessen gepland.");
+
+
+    document.getElementById("homeHomework").innerHTML =
+        homework.length
+        ? homework.slice(0,5).map(h=>`
+
+            <div class="homework">
+
+                <div class="homework-info">
+
+                    <div class="homework-title">
+                        ${escapeHTML(h.title)}
+                    </div>
+
+                    <div class="homework-sub">
+                        ${escapeHTML(h.subject)}
+                        • ${formatDate(h.deadline)}
+                    </div>
+
+                </div>
+
+                ${
+                    h.notDone
+                    ? `<span class="badge b-red">Niet af</span>`
+                    : `<span class="badge b-green">Open</span>`
+                }
+
+            </div>
+
+        `).join("")
+        : emptyHTML("📝","Geen huiswerk","Je hebt niets openstaan.");
 }
 
+function lessonHTML(l){
 
-/* =====================================================
-   ADD AANWEZIGHEID
-===================================================== */
-
-function addAttendance() {
-
-    data.attendance.push({
-
-        className:
-            document.getElementById("attendanceClass").value,
-
-        student:
-            document.getElementById("attendanceStudent").value,
-
-        date:
-            document.getElementById("attendanceDate").value,
-
-        subject:
-            document.getElementById("attendanceSubject").value,
-
-        status:
-            document.getElementById("attendanceStatus").value
-
-    });
-
-    save();
-    closeModal();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADD HUISWERK
-===================================================== */
-
-function addHomework() {
-
-    const title =
-        document.getElementById("homeworkTitle").value;
-
-    if (!title)
-        return alert("Vul een opdracht in.");
-
-    data.homework.push({
-
-        className:
-            document.getElementById("homeworkClass").value,
-
-        subject:
-            document.getElementById("homeworkSubject").value,
-
-        title,
-
-        date:
-            document.getElementById("homeworkDate").value,
-
-        notDone:
-            document.getElementById("homeworkNotDone").checked
-
-    });
-
-    save();
-    closeModal();
-    renderAll();
-
-}
-
-
-/* =====================================================
-   ADMIN RENDER
-===================================================== */
-
-function renderAdmin() {
-
-    renderAdminClasses();
-    renderAdminSchedule();
-    renderAdminGrades();
-    renderAdminAttendance();
-    renderAdminHomework();
-
-}
-
-
-/* =====================================================
-   TODAY
-===================================================== */
-
-function renderToday() {
-
-    const days = [
-        "Zondag",
-        "Maandag",
-        "Dinsdag",
-        "Woensdag",
-        "Donderdag",
-        "Vrijdag",
-        "Zaterdag"
-    ];
-
-    const today =
-        days[new Date().getDay()];
-
-    const lessons =
-        data.lessons.filter(l => l.day === today);
-
-    document.getElementById("homeLessons")
-        .textContent = lessons.length;
-
-    const container =
-        document.getElementById("todayLessons");
-
-    if (!lessons.length) {
-
-        container.innerHTML =
-            `<p class="empty">Geen lessen vandaag.</p>`;
-
-        return;
-
-    }
-
-    container.innerHTML =
-        lessons.map(l => `
+    return `
 
         <div class="lesson">
 
             <div class="lesson-time">
-                ${l.time}
+                ${escapeHTML(l.start)}
+                <br>
+                ${escapeHTML(l.end)}
             </div>
 
-            <div class="lesson-info">
+            <div>
+                <div class="lesson-name">
+                    ${escapeHTML(l.subject)}
+                </div>
 
-                <strong>${l.subject}</strong>
+                <div class="lesson-info">
+                    ${escapeHTML(l.teacher)}
+                </div>
+            </div>
 
-                <span>
-                    ${l.teacher}
-                    · Lokaal ${l.room}
-                    · Klas ${l.className}
+            <div class="room">
+                ${escapeHTML(l.room)}
+            </div>
+
+        </div>
+    `;
+}
+
+function emptyHTML(icon,title,text){
+
+    return `
+        <div class="empty">
+
+            <div class="empty-icon">${icon}</div>
+
+            <h3>${title}</h3>
+
+            <p>${text}</p>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   ROOSTER
+   ========================================================= */
+
+function renderSchedule(){
+
+    const day =
+        document.getElementById("scheduleDay").value;
+
+    const lessons = data.schedule
+        .filter(l =>
+            l.class === data.currentClass &&
+            l.day === day
+        )
+        .sort((a,b)=>a.start.localeCompare(b.start));
+
+    document.getElementById("scheduleList").innerHTML =
+        lessons.length
+        ? lessons.map(lessonHTML).join("")
+        : emptyHTML(
+            "📅",
+            "Geen lessen",
+            `Geen lessen op ${day}.`
+        );
+}
+
+document.getElementById("scheduleDay")
+    .addEventListener("change",renderSchedule);
+
+
+/* =========================================================
+   GRADES
+   ========================================================= */
+
+function renderGrades(){
+
+    const grades = currentGrades();
+
+    const average = grades.length
+        ? (
+            grades.reduce((a,g)=>a+Number(g.grade),0)
+            / grades.length
+        ).toFixed(1)
+        : "-";
+
+    const highest = grades.length
+        ? Math.max(...grades.map(g=>Number(g.grade))).toFixed(1)
+        : "-";
+
+    const lowest = grades.length
+        ? Math.min(...grades.map(g=>Number(g.grade))).toFixed(1)
+        : "-";
+
+    document.getElementById("gradeStats").innerHTML = `
+
+        <div class="stat green">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-label">Gemiddelde</div>
+            <div class="stat-number">${average}</div>
+        </div>
+
+        <div class="stat cyan">
+            <div class="stat-icon">⬆️</div>
+            <div class="stat-label">Hoogste</div>
+            <div class="stat-number">${highest}</div>
+        </div>
+
+        <div class="stat red">
+            <div class="stat-icon">⬇️</div>
+            <div class="stat-label">Laagste</div>
+            <div class="stat-number">${lowest}</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">📝</div>
+            <div class="stat-label">Aantal cijfers</div>
+            <div class="stat-number">${grades.length}</div>
+        </div>
+    `;
+
+
+    document.getElementById("gradesTable").innerHTML =
+        grades.length
+        ? grades.map(g=>`
+
+            <tr>
+
+                <td>${escapeHTML(g.subject)}</td>
+
+                <td>${escapeHTML(g.test)}</td>
+
+                <td>
+                    <span class="badge ${
+                        Number(g.grade) >= 5.5
+                        ? "b-green"
+                        : "b-red"
+                    }">
+                        ${Number(g.grade).toFixed(1)}
+                    </span>
+                </td>
+
+                <td>${formatDate(g.date)}</td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="4">
+                    ${emptyHTML("📊","Geen cijfers","Er zijn nog geen cijfers.")}
+                </td>
+            </tr>
+        `;
+}
+
+
+/* =========================================================
+   SUBJECTS
+   ========================================================= */
+
+function renderSubjects(){
+
+    document.getElementById("subjectsGrid").innerHTML =
+        data.subjects.length
+        ? data.subjects.map(s=>`
+
+            <div class="subject">
+
+                <div class="subject-icon">
+                    ${escapeHTML(s.icon || "📚")}
+                </div>
+
+                <h3>${escapeHTML(s.name)}</h3>
+
+                <p>
+                    ${escapeHTML(s.teacher || "Geen docent")}
+                </p>
+
+            </div>
+
+        `).join("")
+        : emptyHTML("📚","Geen vakken","Er zijn nog geen vakken.");
+}
+
+
+/* =========================================================
+   HOMEWORK
+   ========================================================= */
+
+function renderHomework(){
+
+    const homework = data.homework.filter(
+        h=>h.class===data.currentClass
+    );
+
+    document.getElementById("homeworkGrid").innerHTML =
+        homework.length
+        ? homework.map(h=>`
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <div>
+
+                        <div class="card-title">
+                            ${escapeHTML(h.title)}
+                        </div>
+
+                        <div class="card-sub">
+                            ${escapeHTML(h.subject)}
+                        </div>
+
+                    </div>
+
+                    ${
+                        h.notDone
+                        ? `<span class="badge b-red">Niet af</span>`
+                        : `<span class="badge b-green">Open</span>`
+                    }
+
+                </div>
+
+                <div class="card-body">
+
+                    <div style="color:var(--muted);font-size:10px">
+                        Deadline:
+                        <strong style="color:white">
+                            ${formatDate(h.deadline)}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("")
+        : emptyHTML("📝","Geen huiswerk","Er staat geen huiswerk.");
+}
+
+
+/* =========================================================
+   AGENDA
+   ========================================================= */
+
+function renderAgenda(){
+
+    const events = [...data.agenda]
+        .sort((a,b)=>a.date.localeCompare(b.date));
+
+    document.getElementById("agendaList").innerHTML =
+        events.length
+        ? events.map(e=>`
+
+            <div class="lesson">
+
+                <div class="lesson-time">
+                    ${formatDate(e.date)}
+                </div>
+
+                <div>
+                    <div class="lesson-name">
+                        ${escapeHTML(e.title)}
+                    </div>
+                </div>
+
+                <span class="badge b-purple">
+                    ${escapeHTML(e.type)}
                 </span>
 
             </div>
 
+        `).join("")
+        : emptyHTML("🗓️","Agenda leeg","Er zijn geen afspraken.");
+}
+
+
+/* =========================================================
+   ROOMS
+   ========================================================= */
+
+function renderRooms(){
+
+    document.getElementById("roomsGrid").innerHTML =
+        data.rooms.length
+        ? data.rooms.map(r=>`
+
+            <div class="subject">
+
+                <div class="subject-icon">🚪</div>
+
+                <h3>${escapeHTML(r.name)}</h3>
+
+                <p>
+                    ${escapeHTML(r.building)}
+                    • verdieping ${escapeHTML(r.floor)}
+                </p>
+
+            </div>
+
+        `).join("")
+        : emptyHTML("🚪","Geen lokalen","Er zijn geen lokalen.");
+}
+
+
+/* =========================================================
+   ATTENDANCE
+   ========================================================= */
+
+function renderAttendance(){
+
+    const list = data.attendance.filter(
+        a=>a.class===data.currentClass
+    );
+
+    const aanwezig = list.filter(
+        a=>a.status==="Aanwezig"
+    ).length;
+
+    const laat = list.filter(
+        a=>a.status==="Te laat"
+    ).length;
+
+    const absent = list.filter(
+        a=>a.status==="Afwezig"
+    ).length;
+
+    const geo = list.filter(
+        a=>a.status==="Geoorloofd afwezig"
+    ).length;
+
+    document.getElementById("attendanceStats").innerHTML = `
+
+        <div class="att">
+            <div class="att-number" style="color:var(--green)">
+                ${aanwezig}
+            </div>
+            <div class="att-label">Aanwezig</div>
         </div>
 
-        `).join("");
+        <div class="att">
+            <div class="att-number" style="color:var(--yellow)">
+                ${laat}
+            </div>
+            <div class="att-label">Te laat</div>
+        </div>
 
+        <div class="att">
+            <div class="att-number" style="color:var(--red)">
+                ${absent}
+            </div>
+            <div class="att-label">Afwezig</div>
+        </div>
+
+        <div class="att">
+            <div class="att-number" style="color:var(--cyan)">
+                ${geo}
+            </div>
+            <div class="att-label">Geoorloofd</div>
+        </div>
+    `;
+
+
+    document.getElementById("attendanceTable").innerHTML =
+        list.length
+        ? list.map(a=>`
+
+            <tr>
+
+                <td>${formatDate(a.date)}</td>
+
+                <td>${escapeHTML(a.subject)}</td>
+
+                <td>${statusBadge(a.status)}</td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="3">
+                    ${emptyHTML(
+                        "✅",
+                        "Geen registratie",
+                        "Er is nog geen aanwezigheid."
+                    )}
+                </td>
+            </tr>
+        `;
 }
 
 
-/* =====================================================
-   ALLES RENDEREN
-===================================================== */
+/* =========================================================
+   ADMIN LOGIN
+   ========================================================= */
 
-function renderAll() {
+let adminLoggedIn = false;
 
-    updateDate();
+function showAdminLogin(){
 
-    renderGrades();
-    renderSubjects();
-    renderSchedule();
-    renderHomework();
-    renderAttendance();
-    renderRooms();
-    renderToday();
+    document.getElementById("adminLogin").style.display = "block";
+
+    document.getElementById("adminContent").style.display = "none";
+}
+
+function showAdminContent(){
+
+    document.getElementById("adminLogin").style.display = "none";
+
+    document.getElementById("adminContent").style.display = "block";
+
+    renderAdmin();
+}
+
+document.getElementById("loginAdmin")
+    .addEventListener("click",loginAdmin);
+
+document.getElementById("adminCode")
+    .addEventListener("keydown",e=>{
+
+        if(e.key==="Enter"){
+            loginAdmin();
+        }
+
+    });
+
+function loginAdmin(){
+
+    const code =
+        document.getElementById("adminCode").value;
+
+    if(code === ADMIN_CODE){
+
+        adminLoggedIn = true;
+
+        document.getElementById("adminCode").value = "";
+
+        showAdminContent();
+
+        toast("Succesvol ingelogd als admin","ok");
+
+    }else{
+
+        toast("Verkeerde admin-code","err");
+
+    }
+}
+
+document.getElementById("logoutAdmin")
+    .addEventListener("click",()=>{
+
+        adminLoggedIn = false;
+
+        showAdminLogin();
+
+        toast("Je bent uitgelogd","info");
+
+    });
+
+
+/* =========================================================
+   ADMIN TABS
+   ========================================================= */
+
+document.querySelectorAll(".admin-tab")
+    .forEach(tab=>{
+
+        tab.addEventListener("click",()=>{
+
+            const target = tab.dataset.admin;
+
+            document.querySelectorAll(".admin-tab")
+                .forEach(x=>x.classList.remove("active"));
+
+            tab.classList.add("active");
+
+            document.querySelectorAll(".admin-page")
+                .forEach(x=>x.style.display="none");
+
+            document.getElementById(
+                "admin-"+target
+            ).style.display = "block";
+
+            renderAdmin();
+
+        });
+
+    });
+
+
+/* =========================================================
+   ADMIN RENDER
+   ========================================================= */
+
+function renderAdmin(){
+
+    if(!adminLoggedIn) return;
+
+    renderAdminClassSelect();
+    renderAdminStats();
+    renderClassAdmin();
+    renderStudentsAdmin();
+    renderScheduleAdmin();
+    renderGradesAdmin();
+    renderHomeworkAdmin();
+    renderAttendanceAdmin();
+    renderRoomsAdmin();
+    renderSubjectsAdmin();
+}
+
+
+/* ADMIN STATS */
+
+function renderAdminStats(){
+
+    document.getElementById("adminStats").innerHTML = `
+
+        <div class="stat">
+            <div class="stat-icon">🏫</div>
+            <div class="stat-label">Klassen</div>
+            <div class="stat-number">${data.classes.length}</div>
+        </div>
+
+        <div class="stat cyan">
+            <div class="stat-icon">👨‍🎓</div>
+            <div class="stat-label">Leerlingen</div>
+            <div class="stat-number">${data.students.length}</div>
+        </div>
+
+        <div class="stat green">
+            <div class="stat-icon">📚</div>
+            <div class="stat-label">Vakken</div>
+            <div class="stat-number">${data.subjects.length}</div>
+        </div>
+
+        <div class="stat yellow">
+            <div class="stat-icon">📅</div>
+            <div class="stat-label">Lessen</div>
+            <div class="stat-number">${data.schedule.length}</div>
+        </div>
+
+    `;
+}
+
+
+/* CLASS SELECT */
+
+function renderAdminClassSelect(){
+
+    const select =
+        document.getElementById("adminClassSelect");
+
+    select.innerHTML = data.classes.length
+        ? data.classes.map(c=>`
+            <option value="${escapeHTML(c.name)}"
+                ${c.name===data.currentClass?"selected":""}>
+                ${escapeHTML(c.name)}
+            </option>
+        `).join("")
+        : `<option>Geen klassen</option>`;
+}
+
+document.getElementById("adminClassSelect")
+    .addEventListener("change",e=>{
+
+        data.currentClass = e.target.value;
+
+        saveData();
+
+        renderAll();
+        renderAdmin();
+
+        toast(
+            "Actieve klas: " + data.currentClass,
+            "info"
+        );
+    });
+
+
+/* =========================================================
+   CLASS ADMIN
+   ========================================================= */
+
+function renderClassAdmin(){
+
+    document.getElementById("classAdminList").innerHTML =
+        data.classes.length
+        ? data.classes.map(c=>`
+
+            <div class="homework">
+
+                <div class="homework-info">
+
+                    <div class="homework-title">
+                        🏫 ${escapeHTML(c.name)}
+                    </div>
+
+                    <div class="homework-sub">
+                        ${
+                            data.students.filter(
+                                s=>s.class===c.name
+                            ).length
+                        } leerlingen
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn danger small"
+                    onclick="deleteClass('${c.id}')"
+                >
+                    Verwijder
+                </button>
+
+            </div>
+
+        `).join("")
+        : emptyHTML(
+            "🏫",
+            "Geen klassen",
+            "Voeg een klas toe."
+        );
+}
+
+document.getElementById("addClass")
+    .addEventListener("click",()=>{
+
+        openModal(
+            "Nieuwe klas",
+            `
+                <div class="form-group">
+                    <label>Klasnaam</label>
+                    <input id="f_class" placeholder="Bijv. 3A">
+                </div>
+            `,
+            ()=>{
+
+                const name =
+                    document.getElementById("f_class").value.trim();
+
+                if(!name){
+                    toast("Vul een klasnaam in","err");
+                    return false;
+                }
+
+                if(data.classes.some(
+                    c=>c.name.toLowerCase()===name.toLowerCase()
+                )){
+                    toast("Deze klas bestaat al","err");
+                    return false;
+                }
+
+                data.classes.push({
+                    id:id("class"),
+                    name
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Klas toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteClass = function(classId){
+
+    const cls = data.classes.find(c=>c.id===classId);
+
+    if(!cls) return;
+
+    if(data.classes.length<=1){
+        toast("Er moet minimaal één klas blijven","err");
+        return;
+    }
+
+    if(!confirm(
+        `Klas ${cls.name} verwijderen?`
+    )){
+        return;
+    }
+
+    data.classes =
+        data.classes.filter(c=>c.id!==classId);
+
+    data.students =
+        data.students.filter(s=>s.class!==cls.name);
+
+    data.schedule =
+        data.schedule.filter(s=>s.class!==cls.name);
+
+    data.grades =
+        data.grades.filter(g=>g.class!==cls.name);
+
+    data.homework =
+        data.homework.filter(h=>h.class!==cls.name);
+
+    data.attendance =
+        data.attendance.filter(a=>a.class!==cls.name);
+
+    if(data.currentClass===cls.name){
+        data.currentClass = data.classes[0].name;
+    }
+
+    saveData();
+    renderAll();
     renderAdmin();
 
+    toast("Klas verwijderd","info");
+};
+
+
+/* =========================================================
+   STUDENTS ADMIN
+   ========================================================= */
+
+function renderStudentsAdmin(){
+
+    const list =
+        data.students.filter(
+            s=>s.class===data.currentClass
+        );
+
+    document.getElementById("studentsAdminTable").innerHTML =
+        list.length
+        ? list.map(s=>`
+
+            <tr>
+
+                <td>
+                    <strong style="color:white">
+                        ${escapeHTML(s.name)}
+                    </strong>
+                </td>
+
+                <td>${escapeHTML(s.class)}</td>
+
+                <td>
+                    <button
+                        class="btn danger small"
+                        onclick="deleteStudent('${s.id}')"
+                    >
+                        Verwijder
+                    </button>
+                </td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="3">
+                    ${emptyHTML(
+                        "👨‍🎓",
+                        "Geen leerlingen",
+                        "Voeg een leerling toe."
+                    )}
+                </td>
+            </tr>
+        `;
 }
 
 
-/* =====================================================
-   MODAL SLUITEN
-===================================================== */
+document.getElementById("addStudent")
+    .addEventListener("click",()=>{
 
-document.getElementById("modal")
-.addEventListener("click", function(e) {
+        openModal(
+            "Leerling toevoegen",
+            `
+                <div class="form-group">
+                    <label>Naam</label>
+                    <input id="f_student"
+                        placeholder="Voornaam + achternaam">
+                </div>
 
-    if (e.target === this)
+                <div class="form-group">
+                    <label>Klas</label>
+                    <select id="f_student_class">
+                        ${data.classes.map(c=>`
+                            <option value="${escapeHTML(c.name)}"
+                                ${c.name===data.currentClass?"selected":""}>
+                                ${escapeHTML(c.name)}
+                            </option>
+                        `).join("")}
+                    </select>
+                </div>
+            `,
+            ()=>{
+
+                const name =
+                    document.getElementById("f_student")
+                    .value.trim();
+
+                const cls =
+                    document.getElementById("f_student_class")
+                    .value;
+
+                if(!name){
+                    toast("Vul een naam in","err");
+                    return false;
+                }
+
+                data.students.push({
+                    id:id("student"),
+                    name,
+                    class:cls
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Leerling toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteStudent = function(studentId){
+
+    const student =
+        data.students.find(s=>s.id===studentId);
+
+    if(!student) return;
+
+    if(!confirm(
+        `${student.name} verwijderen?`
+    )){
+        return;
+    }
+
+    data.students =
+        data.students.filter(s=>s.id!==studentId);
+
+    data.grades =
+        data.grades.filter(g=>g.student!==student.name);
+
+    data.attendance =
+        data.attendance.filter(a=>a.student!==student.name);
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Leerling verwijderd","info");
+};
+
+
+/* =========================================================
+   SCHEDULE ADMIN
+   ========================================================= */
+
+function renderScheduleAdmin(){
+
+    const list = data.schedule
+        .filter(l=>l.class===data.currentClass)
+        .sort((a,b)=>{
+
+            const days = [
+                "Maandag",
+                "Dinsdag",
+                "Woensdag",
+                "Donderdag",
+                "Vrijdag"
+            ];
+
+            return days.indexOf(a.day)-days.indexOf(b.day)
+                || a.start.localeCompare(b.start);
+        });
+
+    document.getElementById("scheduleAdminTable").innerHTML =
+        list.length
+        ? list.map(l=>`
+
+            <tr>
+
+                <td>${escapeHTML(l.day)}</td>
+
+                <td>
+                    ${escapeHTML(l.start)}
+                    -
+                    ${escapeHTML(l.end)}
+                </td>
+
+                <td>${escapeHTML(l.subject)}</td>
+
+                <td>${escapeHTML(l.teacher)}</td>
+
+                <td>${escapeHTML(l.room)}</td>
+
+                <td>
+                    <button
+                        class="btn danger small"
+                        onclick="deleteLesson('${l.id}')"
+                    >
+                        Verwijder
+                    </button>
+                </td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="6">
+                    ${emptyHTML(
+                        "📅",
+                        "Geen lessen",
+                        "Voeg een les toe."
+                    )}
+                </td>
+            </tr>
+        `;
+}
+
+
+document.getElementById("addLesson")
+    .addEventListener("click",()=>{
+
+        openModal(
+            "Les toevoegen",
+            `
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Dag</label>
+
+                        <select id="f_day">
+                            ${[
+                                "Maandag",
+                                "Dinsdag",
+                                "Woensdag",
+                                "Donderdag",
+                                "Vrijdag"
+                            ].map(x=>`
+                                <option>${x}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vak</label>
+
+                        <select id="f_subject">
+                            ${data.subjects.map(s=>`
+                                <option value="${escapeHTML(s.name)}">
+                                    ${escapeHTML(s.name)}
+                                </option>
+                            `).join("")}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Start</label>
+                        <input id="f_start" type="time" value="08:30">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Einde</label>
+                        <input id="f_end" type="time" value="09:20">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Leraar</label>
+                        <input id="f_teacher" placeholder="Naam docent">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lokaal</label>
+
+                        <select id="f_room">
+
+                            ${data.rooms.map(r=>`
+                                <option value="${escapeHTML(r.name)}">
+                                    ${escapeHTML(r.name)}
+                                </option>
+                            `).join("")}
+
+                        </select>
+
+                    </div>
+
+                </div>
+            `,
+            ()=>{
+
+                const day =
+                    document.getElementById("f_day").value;
+
+                const subject =
+                    document.getElementById("f_subject").value;
+
+                const start =
+                    document.getElementById("f_start").value;
+
+                const end =
+                    document.getElementById("f_end").value;
+
+                const teacher =
+                    document.getElementById("f_teacher").value.trim();
+
+                const room =
+                    document.getElementById("f_room").value;
+
+                if(!teacher){
+                    toast("Vul een leraar in","err");
+                    return false;
+                }
+
+                if(start>=end){
+                    toast("De eindtijd moet na de starttijd liggen","err");
+                    return false;
+                }
+
+                data.schedule.push({
+                    id:id("lesson"),
+                    class:data.currentClass,
+                    day,
+                    start,
+                    end,
+                    subject,
+                    teacher,
+                    room
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Les toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteLesson = function(lessonId){
+
+    if(!confirm("Deze les verwijderen?"))
+        return;
+
+    data.schedule =
+        data.schedule.filter(l=>l.id!==lessonId);
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Les verwijderd","info");
+};
+
+
+/* =========================================================
+   GRADE ADMIN
+   ========================================================= */
+
+function renderGradesAdmin(){
+
+    const list =
+        data.grades.filter(
+            g=>g.class===data.currentClass
+        );
+
+    document.getElementById("gradesAdminTable").innerHTML =
+        list.length
+        ? list.map(g=>`
+
+            <tr>
+
+                <td>${escapeHTML(g.student)}</td>
+
+                <td>${escapeHTML(g.subject)}</td>
+
+                <td>${escapeHTML(g.test)}</td>
+
+                <td>
+                    <span class="badge ${
+                        Number(g.grade)>=5.5
+                        ?"b-green"
+                        :"b-red"
+                    }">
+                        ${Number(g.grade).toFixed(1)}
+                    </span>
+                </td>
+
+                <td>
+                    <button
+                        class="btn danger small"
+                        onclick="deleteGrade('${g.id}')"
+                    >
+                        Verwijder
+                    </button>
+                </td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="5">
+                    ${emptyHTML(
+                        "📊",
+                        "Geen cijfers",
+                        "Voeg een cijfer toe."
+                    )}
+                </td>
+            </tr>
+        `;
+}
+
+
+document.getElementById("addGrade")
+    .addEventListener("click",()=>{
+
+        const students =
+            getClassStudents();
+
+        openModal(
+            "Cijfer toevoegen",
+            `
+                <div class="form-group">
+                    <label>Leerling</label>
+
+                    <select id="f_grade_student">
+
+                        ${
+                            students.length
+                            ? students.map(s=>`
+                                <option value="${escapeHTML(s.name)}">
+                                    ${escapeHTML(s.name)}
+                                </option>
+                            `).join("")
+                            : `<option>Geen leerlingen</option>`
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Vak</label>
+
+                        <select id="f_grade_subject">
+                            ${data.subjects.map(s=>`
+                                <option>${escapeHTML(s.name)}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cijfer</label>
+                        <input
+                            id="f_grade_value"
+                            type="number"
+                            min="1"
+                            max="10"
+                            step=".1"
+                            placeholder="Bijv. 7.5"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Toets / opdracht</label>
+                    <input
+                        id="f_grade_test"
+                        placeholder="Bijv. Hoofdstuk 5"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Datum</label>
+                    <input
+                        id="f_grade_date"
+                        type="date"
+                        value="${new Date().toISOString().slice(0,10)}"
+                    >
+                </div>
+            `,
+            ()=>{
+
+                const student =
+                    document.getElementById(
+                        "f_grade_student"
+                    ).value;
+
+                const subject =
+                    document.getElementById(
+                        "f_grade_subject"
+                    ).value;
+
+                const grade =
+                    Number(
+                        document.getElementById(
+                            "f_grade_value"
+                        ).value
+                    );
+
+                const test =
+                    document.getElementById(
+                        "f_grade_test"
+                    ).value.trim();
+
+                const date =
+                    document.getElementById(
+                        "f_grade_date"
+                    ).value;
+
+                if(!student){
+                    toast("Kies een leerling","err");
+                    return false;
+                }
+
+                if(!grade || grade<1 || grade>10){
+                    toast("Cijfer moet tussen 1 en 10 liggen","err");
+                    return false;
+                }
+
+                if(!test){
+                    toast("Vul de toetsnaam in","err");
+                    return false;
+                }
+
+                data.grades.push({
+                    id:id("grade"),
+                    student,
+                    class:data.currentClass,
+                    subject,
+                    test,
+                    grade,
+                    date
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Cijfer toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteGrade = function(gradeId){
+
+    if(!confirm("Dit cijfer verwijderen?"))
+        return;
+
+    data.grades =
+        data.grades.filter(g=>g.id!==gradeId);
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Cijfer verwijderd","info");
+};
+
+
+/* =========================================================
+   HOMEWORK ADMIN
+   ========================================================= */
+
+function renderHomeworkAdmin(){
+
+    const list =
+        data.homework.filter(
+            h=>h.class===data.currentClass
+        );
+
+    document.getElementById("homeworkAdminTable").innerHTML =
+        list.length
+        ? list.map(h=>`
+
+            <tr>
+
+                <td>${escapeHTML(h.subject)}</td>
+
+                <td>${escapeHTML(h.title)}</td>
+
+                <td>${formatDate(h.deadline)}</td>
+
+                <td>
+                    ${
+                        h.notDone
+                        ? `<span class="badge b-red">Niet af</span>`
+                        : `<span class="badge b-green">Open</span>`
+                    }
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn warning small"
+                        onclick="toggleHomework('${h.id}')"
+                    >
+                        ${h.notDone?"Afmaken":"Niet af"}
+                    </button>
+
+                    <button
+                        class="btn danger small"
+                        onclick="deleteHomework('${h.id}')"
+                    >
+                        Verwijder
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="5">
+                    ${emptyHTML(
+                        "📝",
+                        "Geen huiswerk",
+                        "Voeg een taak toe."
+                    )}
+                </td>
+            </tr>
+        `;
+}
+
+
+document.getElementById("addHomework")
+    .addEventListener("click",()=>{
+
+        openModal(
+            "Huiswerk toevoegen",
+            `
+                <div class="form-group">
+                    <label>Vak</label>
+
+                    <select id="f_hw_subject">
+                        ${data.subjects.map(s=>`
+                            <option>${escapeHTML(s.name)}</option>
+                        `).join("")}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Taak</label>
+
+                    <input
+                        id="f_hw_title"
+                        placeholder="Wat moet de leerling doen?"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Deadline</label>
+
+                    <input
+                        id="f_hw_deadline"
+                        type="date"
+                    >
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        <input
+                            id="f_hw_notdone"
+                            type="checkbox"
+                            style="width:auto;margin-right:6px"
+                        >
+                        Markeer als "niet af"
+                    </label>
+
+                </div>
+            `,
+            ()=>{
+
+                const subject =
+                    document.getElementById(
+                        "f_hw_subject"
+                    ).value;
+
+                const title =
+                    document.getElementById(
+                        "f_hw_title"
+                    ).value.trim();
+
+                const deadline =
+                    document.getElementById(
+                        "f_hw_deadline"
+                    ).value;
+
+                const notDone =
+                    document.getElementById(
+                        "f_hw_notdone"
+                    ).checked;
+
+                if(!title){
+                    toast("Vul de taak in","err");
+                    return false;
+                }
+
+                if(!deadline){
+                    toast("Kies een deadline","err");
+                    return false;
+                }
+
+                data.homework.push({
+                    id:id("homework"),
+                    class:data.currentClass,
+                    subject,
+                    title,
+                    deadline,
+                    notDone
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Huiswerk toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.toggleHomework = function(homeworkId){
+
+    const h =
+        data.homework.find(
+            x=>x.id===homeworkId
+        );
+
+    if(!h) return;
+
+    h.notDone = !h.notDone;
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast(
+        h.notDone
+        ? "Huiswerk gemarkeerd als niet af"
+        : "Huiswerk weer open",
+        "info"
+    );
+};
+
+
+window.deleteHomework = function(homeworkId){
+
+    if(!confirm("Dit huiswerk verwijderen?"))
+        return;
+
+    data.homework =
+        data.homework.filter(
+            h=>h.id!==homeworkId
+        );
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Huiswerk verwijderd","info");
+};
+
+
+/* =========================================================
+   ATTENDANCE ADMIN
+   ========================================================= */
+
+function renderAttendanceAdmin(){
+
+    const list =
+        data.attendance.filter(
+            a=>a.class===data.currentClass
+        );
+
+    document.getElementById(
+        "attendanceAdminTable"
+    ).innerHTML =
+        list.length
+        ? list.map(a=>`
+
+            <tr>
+
+                <td>${escapeHTML(a.student)}</td>
+
+                <td>${escapeHTML(a.subject)}</td>
+
+                <td>${formatDate(a.date)}</td>
+
+                <td>${statusBadge(a.status)}</td>
+
+                <td>
+
+                    <button
+                        class="btn danger small"
+                        onclick="deleteAttendance('${a.id}')"
+                    >
+                        Verwijder
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `).join("")
+        : `
+            <tr>
+                <td colspan="5">
+                    ${emptyHTML(
+                        "✅",
+                        "Geen registraties",
+                        "Voeg aanwezigheid toe."
+                    )}
+                </td>
+            </tr>
+        `;
+}
+
+
+document.getElementById("addAttendance")
+    .addEventListener("click",()=>{
+
+        const students =
+            getClassStudents();
+
+        openModal(
+            "Aanwezigheid toevoegen",
+            `
+                <div class="form-group">
+                    <label>Leerling</label>
+
+                    <select id="f_att_student">
+
+                        ${
+                            students.map(s=>`
+                                <option>
+                                    ${escapeHTML(s.name)}
+                                </option>
+                            `).join("")
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>Vak</label>
+
+                        <select id="f_att_subject">
+                            ${data.subjects.map(s=>`
+                                <option>
+                                    ${escapeHTML(s.name)}
+                                </option>
+                            `).join("")}
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Datum</label>
+
+                        <input
+                            id="f_att_date"
+                            type="date"
+                            value="${new Date().toISOString().slice(0,10)}"
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Status</label>
+
+                    <select id="f_att_status">
+
+                        <option>Aanwezig</option>
+                        <option>Te laat</option>
+                        <option>Afwezig</option>
+                        <option>Geoorloofd afwezig</option>
+
+                    </select>
+
+                </div>
+            `,
+            ()=>{
+
+                const student =
+                    document.getElementById(
+                        "f_att_student"
+                    ).value;
+
+                const subject =
+                    document.getElementById(
+                        "f_att_subject"
+                    ).value;
+
+                const date =
+                    document.getElementById(
+                        "f_att_date"
+                    ).value;
+
+                const status =
+                    document.getElementById(
+                        "f_att_status"
+                    ).value;
+
+                if(!student){
+                    toast("Kies een leerling","err");
+                    return false;
+                }
+
+                data.attendance.push({
+                    id:id("attendance"),
+                    student,
+                    class:data.currentClass,
+                    subject,
+                    date,
+                    status
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Aanwezigheid opgeslagen","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteAttendance = function(attendanceId){
+
+    if(!confirm("Deze registratie verwijderen?"))
+        return;
+
+    data.attendance =
+        data.attendance.filter(
+            a=>a.id!==attendanceId
+        );
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Registratie verwijderd","info");
+};
+
+
+/* =========================================================
+   ROOMS ADMIN
+   ========================================================= */
+
+function renderRoomsAdmin(){
+
+    document.getElementById("roomsAdminList").innerHTML =
+        data.rooms.length
+        ? data.rooms.map(r=>`
+
+            <div class="homework">
+
+                <div class="homework-info">
+
+                    <div class="homework-title">
+                        🚪 ${escapeHTML(r.name)}
+                    </div>
+
+                    <div class="homework-sub">
+                        ${escapeHTML(r.building)}
+                        • verdieping ${escapeHTML(r.floor)}
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn danger small"
+                    onclick="deleteRoom('${r.id}')"
+                >
+                    Verwijder
+                </button>
+
+            </div>
+
+        `).join("")
+        : emptyHTML(
+            "🚪",
+            "Geen lokalen",
+            "Voeg een lokaal toe."
+        );
+}
+
+
+document.getElementById("addRoom")
+    .addEventListener("click",()=>{
+
+        openModal(
+            "Lokaal toevoegen",
+            `
+                <div class="form-group">
+                    <label>Lokaal</label>
+                    <input id="f_room_name" placeholder="Bijv. D204">
+                </div>
+
+                <div class="form-group">
+                    <label>Gebouw</label>
+                    <input id="f_room_building" placeholder="Hoofdgebouw">
+                </div>
+
+                <div class="form-group">
+                    <label>Verdieping</label>
+                    <input id="f_room_floor" placeholder="2">
+                </div>
+            `,
+            ()=>{
+
+                const name =
+                    document.getElementById(
+                        "f_room_name"
+                    ).value.trim();
+
+                const building =
+                    document.getElementById(
+                        "f_room_building"
+                    ).value.trim();
+
+                const floor =
+                    document.getElementById(
+                        "f_room_floor"
+                    ).value.trim();
+
+                if(!name){
+                    toast("Vul een lokaal in","err");
+                    return false;
+                }
+
+                data.rooms.push({
+                    id:id("room"),
+                    name,
+                    building,
+                    floor
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Lokaal toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteRoom = function(roomId){
+
+    if(!confirm("Dit lokaal verwijderen?"))
+        return;
+
+    data.rooms =
+        data.rooms.filter(r=>r.id!==roomId);
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Lokaal verwijderd","info");
+};
+
+
+/* =========================================================
+   SUBJECTS ADMIN
+   ========================================================= */
+
+function renderSubjectsAdmin(){
+
+    document.getElementById(
+        "subjectsAdminGrid"
+    ).innerHTML =
+        data.subjects.length
+        ? data.subjects.map(s=>`
+
+            <div class="subject">
+
+                <div class="subject-icon">
+                    ${escapeHTML(s.icon || "📚")}
+                </div>
+
+                <h3>${escapeHTML(s.name)}</h3>
+
+                <p>
+                    ${escapeHTML(s.teacher || "Geen docent")}
+                </p>
+
+                <button
+                    class="btn danger small"
+                    style="margin-top:15px"
+                    onclick="deleteSubject('${s.id}')"
+                >
+                    Verwijder
+                </button>
+
+            </div>
+
+        `).join("")
+        : emptyHTML(
+            "📚",
+            "Geen vakken",
+            "Voeg een vak toe."
+        );
+}
+
+
+document.getElementById("addSubject")
+    .addEventListener("click",()=>{
+
+        openModal(
+            "Vak toevoegen",
+            `
+                <div class="form-group">
+                    <label>Vak</label>
+                    <input id="f_sub_name" placeholder="Bijv. Scheikunde">
+                </div>
+
+                <div class="form-group">
+                    <label>Docent</label>
+                    <input id="f_sub_teacher" placeholder="Naam docent">
+                </div>
+
+                <div class="form-group">
+                    <label>Emoji</label>
+                    <input id="f_sub_icon" placeholder="🧪">
+                </div>
+            `,
+            ()=>{
+
+                const name =
+                    document.getElementById(
+                        "f_sub_name"
+                    ).value.trim();
+
+                const teacher =
+                    document.getElementById(
+                        "f_sub_teacher"
+                    ).value.trim();
+
+                const icon =
+                    document.getElementById(
+                        "f_sub_icon"
+                    ).value.trim() || "📚";
+
+                if(!name){
+                    toast("Vul een vaknaam in","err");
+                    return false;
+                }
+
+                data.subjects.push({
+                    id:id("subject"),
+                    name,
+                    teacher,
+                    icon
+                });
+
+                saveData();
+                renderAll();
+                renderAdmin();
+
+                toast("Vak toegevoegd","ok");
+
+                return true;
+            }
+        );
+
+    });
+
+
+window.deleteSubject = function(subjectId){
+
+    const subject =
+        data.subjects.find(
+            s=>s.id===subjectId
+        );
+
+    if(!subject) return;
+
+    if(!confirm(
+        `${subject.name} verwijderen?`
+    )){
+        return;
+    }
+
+    data.subjects =
+        data.subjects.filter(
+            s=>s.id!==subjectId
+        );
+
+    saveData();
+    renderAll();
+    renderAdmin();
+
+    toast("Vak verwijderd","info");
+};
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+document.getElementById("resetData")
+    .addEventListener("click",()=>{
+
+        if(!confirm(
+            "Weet je zeker dat je alle wijzigingen wilt verwijderen?"
+        )){
+            return;
+        }
+
+        data = clone(defaultData);
+
+        saveData();
+
+        renderAll();
+        renderAdmin();
+
+        toast("Demo-data is hersteld","ok");
+    });
+
+
+/* =========================================================
+   MODAL SYSTEM
+   ========================================================= */
+
+let modalSaveFunction = null;
+
+const modalBg =
+    document.getElementById("modalBg");
+
+function openModal(title,html,onSave){
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent = title;
+
+    document.getElementById(
+        "modalBody"
+    ).innerHTML = html;
+
+    modalSaveFunction = onSave;
+
+    modalBg.classList.add("show");
+
+    setTimeout(()=>{
+
+        const first =
+            document.querySelector(
+                "#modalBody input, #modalBody select"
+            );
+
+        if(first) first.focus();
+
+    },100);
+
+}
+
+function closeModal(){
+
+    modalBg.classList.remove("show");
+
+    modalSaveFunction = null;
+}
+
+document.getElementById("modalClose")
+    .addEventListener("click",closeModal);
+
+document.getElementById("modalCancel")
+    .addEventListener("click",closeModal);
+
+modalBg.addEventListener("click",e=>{
+
+    if(e.target===modalBg){
         closeModal();
+    }
 
 });
 
+document.getElementById("modalSave")
+    .addEventListener("click",()=>{
 
-/* =====================================================
-   START
-===================================================== */
+        if(!modalSaveFunction)
+            return;
+
+        const result =
+            modalSaveFunction();
+
+        if(result !== false){
+            closeModal();
+        }
+
+    });
+
+
+/* =========================================================
+   RENDER ALL
+   ========================================================= */
+
+function renderAll(){
+
+    renderHome();
+    renderSchedule();
+    renderGrades();
+    renderSubjects();
+    renderHomework();
+    renderAgenda();
+    renderRooms();
+    renderAttendance();
+
+    if(adminLoggedIn){
+        renderAdmin();
+    }
+}
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
 
 renderAll();
 
